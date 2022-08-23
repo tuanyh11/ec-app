@@ -31,13 +31,40 @@ const tobarCurency = [
     },
 ]
 
+const topbarLanguage = [
+    {
+        language: 'english'
+    },
+    {
+        language: 'France'
+    },
+    {
+        language: 'Germary'
+    }
+]
+
+const topbarMenu = [
+    {
+        pathName: "/",
+        name: "Shipping"
+    },
+    {
+        pathName: "/",
+        name: "FQA"
+    },
+    {
+        pathName: "/",
+        name: "Contact"
+    }
+]
+
 const Topbar = () => {
   return (
     <div className="bg-[#f5f5f5] h-[50px] text-[#111111]">
         <Container>
             <Row>
-                <Col lg={6}>
-                    <div className="flex items-center">
+                <Col lg={6} >
+                    <div className="flex items-center h-full">
                         <div className="flex items-center mr-[50px]">
                             <RiTruckLine className="h-[18px] w-[18px]"/>
                             <span className="ml-[14px] text-[11px] font-medium uppercase text-[#111111]">Free shipping over $100</span>
@@ -52,11 +79,11 @@ const Topbar = () => {
                                 </div>
 
                                 {/* dropdown */}
-                                <div className="absolute top-[110%]">
-                                    <ul className="shadow-md">
+                                <div className="absolute top-[110%] min-w-[80px] left-0 z-[9999999] text-left ">
+                                    <ul className="shadow-md " >
                                         {tobarCurency.map((item, i) => (
-                                            <li key={i}>
-                                                <Link to="/" className="">
+                                            <li key={i} className="border-b-[#f5f5f5] border-b-[1px] last:!border-0 hover:bg-[#e2e2e2] transition">
+                                                <Link to="/" className="p-[13px_20px] text-sm  block uppercase leading-none ">
                                                     {item.curruncy}
                                                 </Link>
                                             </li>
@@ -64,12 +91,23 @@ const Topbar = () => {
                                     </ul>
                                 </div>
                             </div>
-                            <div>
+                            <div className='p-[0_20px] group relative '>
                                 <div className='flex items-center'>
                                     <span className="text-sm font-semibold">English</span>
                                     <RiArrowDownSLine className="ml-[7px]"/>
                                 </div>
-                                
+                                {/* dropdown */}
+                                <div className="absolute top-[110%] min-w-[80px] left-0 z-[9999999] text-left ">
+                                    <ul className="shadow-md " >
+                                        {topbarLanguage.map((item, i) => (
+                                            <li key={i} className="border-b-[#f5f5f5] border-b-[1px] last:!border-0 hover:bg-[#e2e2e2] transition">
+                                                <Link to="/" className="p-[13px_20px] text-sm  block capitalize leading-none ">
+                                                    {item.language}
+                                                </Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
 
@@ -78,16 +116,14 @@ const Topbar = () => {
                 <Col lg={6}>
                     <div className="flex items-center">
                         {/* tobar menu */}
-                        <ul>
-                            <li>
-                                <Link to="/"> Shipping </Link>
-                            </li>
-                            <li>
-                                <Link to="/">FAQ</Link>
-                            </li>
-                            <li>
-                                <Link to="/">Contact</Link>
-                            </li>
+                        <ul className='flex items-center'>
+                            {
+                                topbarMenu.map((item, i) => (
+                                    <li key={i}>
+                                        <Link to="/"> {item.name} </Link>
+                                    </li>
+                                ))
+                            }
                         </ul>
 
                         {/* tobar contact */}
