@@ -4,7 +4,7 @@ const CartPanel = () => {
   return (
     <div className="">
         <div>
-            
+            cart
         </div>
     </div>
   )

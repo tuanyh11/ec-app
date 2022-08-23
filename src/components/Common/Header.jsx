@@ -75,7 +75,7 @@ function Header() {
 
   return (
     <div className="h-[90px] flex items-center">
-      {isTurnOn && <OffLayer><Pannel handleClosePanel={() => setIsTurnOn(false)} {...selectPanel} /></OffLayer>}
+      <OffLayer isTurnOn={isTurnOn}><Pannel handleClosePanel={() => setIsTurnOn(false)} isTurnOn={isTurnOn} {...selectPanel}  /></OffLayer>
       <Container className="h-full">
         <div className="flex items-center justify-between h-full">
           {/* logo */}
