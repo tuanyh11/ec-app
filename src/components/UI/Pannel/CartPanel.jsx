@@ -8,7 +8,7 @@ const CartPanel = () => {
             <CartItem/>
         </div>
         <div>
-
+            
         </div>
     </div>
   )
