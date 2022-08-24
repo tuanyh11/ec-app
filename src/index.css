@@ -9,15 +9,15 @@
     }
     .test {
         @apply hidden animate-fadeIn
+    },
+    .afterStyle::after {
+        @apply content-[""] absolute bottom-[-2px] left-0 right-0 w-0 h-[1px] opacity-0 transition duration-500 ease-in
     }
 }
 
 
 
 
-div {
-    
-}
 
 .panel {
     position: absolute;
