@@ -1,10 +1,14 @@
 import React from 'react'
+import CartItem from '../Cart/CartItem'
 
 const CartPanel = () => {
   return (
-    <div className="">
+    <div className="p-[30px]">
         <div>
-            cart
+            <CartItem/>
+        </div>
+        <div>
+
         </div>
     </div>
   )
