@@ -592,23 +592,7 @@ function Header() {
   const [isTurnOn, setIsTurnOn] = useState(false);
   const [pages, setPages] = useState([])
 
-  useEffect(() => {
-
-    const getPages = async() => {
-      try {
-        const pages = await axios.get('http://localhost/wordpress/graphql', {
-          query: QUERY
-        })
-        console.log(pages)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getPages()
-    console.log(pages)
-
-  }, [])
-  console.log(12323)
+ 
 
   const handleSelectPanel = (title) => {
     setIsTurnOn(true);
