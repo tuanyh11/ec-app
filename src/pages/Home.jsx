@@ -1,5 +1,5 @@
 import React from 'react'
-import {CampaignBar, Banner, Policy, CategoryBanner} from '../components/'
+import {CampaignBar, Banner, Policy, CategoryBanner, CardProduct} from '../components/'
 import Slider from "react-slick";
 import { Link } from 'react-router-dom';
 import {RiTruckLine, RiExchangeDollarFill, RiSecurePaymentLine, RiMedalLine} from 'react-icons/ri'
@@ -67,6 +67,7 @@ const policy = [
 ]
 
 const Home = () => {
+  
   const settings = {
     dots: false,
     infinite: true,
@@ -91,8 +92,8 @@ const Home = () => {
       <section className="hidden lg:block">
           <div className="flex items-center">
             {topCategories.map((category, i) => (
-            <Link to={`/shop/${category.name}`}>
-              <Banner key={i} data={category}/>
+            <Link key={i}  to={`/shop/${category.name}`}>
+              <Banner  data={category}/>
             </Link>
             ))}
           </div>
@@ -156,6 +157,33 @@ const Home = () => {
                 </Col>
               )
             })}
+          </Row>
+        </Container>
+      </section>
+
+      {/* Top month seller  */}
+
+      <section>
+        <Container>
+          <Row>
+            <Col>
+              <h1>Top Month Sellers</h1>
+            </Col>
+            <Col>
+              <div>
+                {/* Home category */}
+                <div>
+                  {topCategories.map((item, i) => (
+                    <div key={i}><p>{item.name}</p></div>
+                  ))}
+                </div>
+                <div>
+                  <Row>
+                    {}
+                  </Row>
+                </div>
+              </div>
+            </Col>
           </Row>
         </Container>
       </section>

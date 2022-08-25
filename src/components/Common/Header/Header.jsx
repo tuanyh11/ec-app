@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import {
   OffLayer,
   Pannel,
@@ -17,6 +18,8 @@ import {
   RiShoppingBagLine,
   RiMenuLine,
 } from 'react-icons/ri';
+
+
 
 const headerPage = [
   {
@@ -584,12 +587,28 @@ const headerActions = [
 ];
 
 function Header() {
+  
   const [selectPanel, setSelectPanel] = useState('');
   const [isTurnOn, setIsTurnOn] = useState(false);
+  const [pages, setPages] = useState([])
 
   useEffect(() => {
-    console.log(123);
-  }, []);
+
+    const getPages = async() => {
+      try {
+        const pages = await axios.get('http://localhost/wordpress/graphql', {
+          query: QUERY
+        })
+        console.log(pages)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getPages()
+    console.log(pages)
+
+  }, [])
+  console.log(12323)
 
   const handleSelectPanel = (title) => {
     setIsTurnOn(true);
