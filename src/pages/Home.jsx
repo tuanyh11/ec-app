@@ -121,6 +121,9 @@ const Home = () => {
       })(QUERY)
   }, [])
 
+
+  console.log(filter)
+
   return (
     <div>
       <CampaignBar
@@ -236,7 +239,7 @@ const Home = () => {
                     <div key={i} onClick={() => setFilter(item.name)}>
                       <p
                         className={`mr-8 capitalize font-medium relative cursor-pointer text-base hover:text-primary leadding-1 leading-[18px] afterStyle hover:after:!bg-primary hover:after:w-full hover:after:opacity-100 ${
-                          filter === item.name.toLowerCase() ? 'active_one' : ''
+                          filter === item.name ? 'active_one' : ''
                         }`}
                       >
                         {item.name}

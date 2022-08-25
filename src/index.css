@@ -20,6 +20,10 @@
     .default-transition {
         @apply transition-all duration-500 ease-linear
     }
+
+    .active_one {
+        @apply after:!bg-primary after:w-full after:opacity-100 text-primary
+    }
 }
 
 .box-check input:checked ~ .checkmark::after {
