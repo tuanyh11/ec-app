@@ -8,9 +8,12 @@ module.exports = {
       transitionTimingFunction: {
         "ease": "cubic-bezier(0.25, 0.1, 0.25, 1)"
       },
+
       colors: {
         "primary": "#FF6F61",
-        "layerColor": "rgba(31, 31, 31, 1)"
+        "layerColor": "rgba(31, 31, 31, 1)",
+        "rgba-20": 'rgba(0,0,0,.2)',
+        "rgba-30": 'rgba(0, 0, 0, .3)'
       },
       keyframes: {
         fadeIn: {

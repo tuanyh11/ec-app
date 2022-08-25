@@ -1,7 +1,7 @@
 import React from 'react'
-import Footer from '../Common/Footer'
-import Header from '../Common/Header'
-import Topbar from '../Common/Topbar'
+import Footer from '../Common/Footer/Footer'
+import Header from '../Common/Header/Header'
+import Topbar from '../Common/Topbar/Topbar'
 
 const DefaultLayout = ({children}) => {
   return (

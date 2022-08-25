@@ -67,11 +67,11 @@ const topbarMenu = [
 
 const Topbar = () => {
   return (
-    <div className="topbar bg-[#f5f5f5] h-[50px] text-[#111111]">
+    <div className="topbar bg-[#f5f5f5] h-[50px] text-[#111111] w-full">
       <Container className="h-full">
-        <div className="flex justify-between items-center h-full">
+        <div className="flex justify-center lg:justify-between items-center h-full">
           <div className="flex items-center h-full">
-            <div className="flex items-center mr-[50px] ">
+            <div className="hidden lg:flex items-center mr-[50px] ">
               <RiTruckLine className="h-[18px] w-[18px]" />
               <span className="ml-[14px] text-[11px] font-medium uppercase text-[#111111]">
                 Free shipping over $100
@@ -82,7 +82,7 @@ const Topbar = () => {
               {/* curruncy */}
               <div className="flex items-center p-[0_20px] h-full group relative">
                 <div className=" flex items-center">
-                  <span className="text-sm font-semibold ">USD</span>
+                  <span className="text-sm font-medium ">USD</span>
                   <RiArrowDownSLine className="ml-[7px]" />
                 </div>
 
@@ -111,7 +111,7 @@ const Topbar = () => {
               {/* language */}
               <div className="flex items-center p-[0_20px] h-full group relative ">
                 <div className="flex items-center">
-                  <span className="text-sm font-semibold">English</span>
+                  <span className="text-sm font-medium">English</span>
                   <RiArrowDownSLine className="ml-[7px]" />
                 </div>
                 {/* dropdown */}
@@ -137,7 +137,7 @@ const Topbar = () => {
             </div>
           </div>
 
-          <div className="flex items-center justify-end">
+          <div className="hidden  items-center justify-end lg:flex">
             {/* tobar menu */}
             <ul className="flex items-center">
               {topbarMenu.map((item, i) => (

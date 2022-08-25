@@ -7,8 +7,8 @@ const AuthPanel = () => {
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <div className='p-[30px_50px]'>
-      <form action="">
+    <div className='p-[30px_50px] h-full '>
+      <form action="" className='h-full flex flex-col justify-center'>
         {/* input user */}
         <div className='mb-[20px]'>
           <input className='w-full p-[15px_20px] outline-0 border border-[#cccccc] text-sm' placeholder='Username'  type="text" />
