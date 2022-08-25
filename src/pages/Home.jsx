@@ -137,10 +137,10 @@ const Home = () => {
 
               const right = {
                 contentContainer: 'flex-start',
-                imgContainer: 'lg:[background-position-x:-120px]'
+                imgContainer: ' [background-position:-120px_0] lg:[background-position:0]'
               }
               const navi = i === 0 || i === 3
-              if(navi) 
+              if(navi)  
                 return (
                   <Col key={i} lg={4} md={6} sm={12} className="mt-[20px]">
                     <Link to={item.pathName}>
