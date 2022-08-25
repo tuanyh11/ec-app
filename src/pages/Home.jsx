@@ -159,7 +159,7 @@ const Home = () => {
             })}
           </Row>
         </Container>
-      </section>
+      </section> 
 
       {/* Top month seller  */}
 
