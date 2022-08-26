@@ -110,6 +110,18 @@ const Home = () => {
             const results = await API.post('http://localhost/wordpress/graphql', {
                query:  `${text}`
             })
+            const category = await API.post('http://localhost/wordpress/graphql', {
+               query:  `query NewQuery {
+                productCategories {
+                  nodes {
+                    id
+                    name
+                    parentId
+                  }
+                }
+              }`
+            })
+            console.log(category)
             const newRes =  results?.data?.data?.products?.edges?.map((item) => {
               const {node} = item
               return node
