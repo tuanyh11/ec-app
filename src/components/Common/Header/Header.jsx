@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import API from '../../../api'
 import {
   OffLayer,
   Pannel,
@@ -594,21 +594,30 @@ function Header() {
 
   useEffect(() => {
 
-    const getPages = async() => {
-      try {
-        const pages = await axios.get('http://localhost/wordpress/graphql', {
-          query: QUERY
-        })
-        console.log(pages)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    getPages()
-    console.log(pages)
- 
+      (
+        async() => {
+            try {
+                const pages = await API.post('http://localhost/wordpress/graphql', {
+                  query: `
+                    query NewQuery {
+                      pages {
+                        nodes {
+                          title
+                          slug
+                        }
+                      }
+                    }
+                  `
+                })
+                const newPages = pages.data?.data?.pages?.nodes
+                setPages(newPages?.reverse())
+              } catch (error) {
+                window.confirm(error)
+              }
+          }
+        )()
+    
   }, [])
-  console.log(12323)
 
   const handleSelectPanel = (title) => {
     setIsTurnOn(true);
@@ -680,7 +689,7 @@ function Header() {
               Razzi.
             </Link>
           </div>
-          <Nav data={headerPage} />
+          <Nav data={pages} />
 
           {/* header actions */}
           <div>

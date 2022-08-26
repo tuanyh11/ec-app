@@ -15,9 +15,9 @@ const Nav = ({data}) => {
                 className=' capitalize text-base font-medium relative  
             transition-all duration-500 ease-out after:content-[""] after:absolute after:h-[1px]
             after:bg-primary after:left-0  after:right-0 after:bottom-[-2px] after:w-0 after:opacity-0 after:ease after:transition-all after:duration-500 '
-                to={item.pathName}
+                to={`/${item?.slug}`}
             >
-                {item.name}
+                {item?.title}
             </Link>
             </li>
         ))}

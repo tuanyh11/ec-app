@@ -20,6 +20,10 @@
     .default-transition {
         @apply transition-all duration-500 ease-linear
     }
+
+    .active_one {
+        @apply after:!bg-primary after:w-full after:opacity-100 text-primary
+    }
 }
 
 .box-check input:checked ~ .checkmark::after {
@@ -31,6 +35,81 @@
 body {
     font-family: 'Jost', sans-serif;
     overflow-x: hidden;
+}
+
+.action-ntn:nth-child(2) {
+    transition-delay: 75ms;
+}
+
+.action-ntn:nth-child(3) {
+    transition-delay: 100ms;
+}
+
+.action-ntn-before::before {
+    content: attr(datatype) !important;
+    position: absolute;
+    top: -40px;
+    background-color: #000;
+    display: inline-block;
+    white-space: nowrap;
+    padding: 6px 12px 7px;
+    border-radius: 5px;
+    font-size: 13px;
+    line-height: 1;
+    display: none;
+    transition: none !important;
+    pointer-events: none;
+    z-index: 9;
+    color: white;
+}
+.action-ntn::after {
+    content: attr(datatype) !important;
+    position: absolute;
+    top: -40px;
+    background-color: #000;
+    display: inline-block;
+    white-space: nowrap;
+    padding: 6px 12px 7px;
+    border-radius: 5px;
+    font-size: 13px;
+    line-height: 1;
+    display: none;
+    transition: none !important;
+    pointer-events: none;
+    z-index: 9;
+    color: white;
+}
+
+.action-ntn-before::after {
+    content: "";
+    display: none;
+    position: absolute;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #000 transparent transparent transparent;
+    top: 3px;
+    transform: rotate(-90deg);
+    right: 20px;
+    
+}
+
+.action-ntn::before {
+    content: "";
+    display: none;
+    position: absolute;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #000 transparent transparent transparent;
+    top: -15px;
+}
+.action-ntn-before:hover::after,
+.action-ntn:hover::before {
+    display: inline-block;
+}
+
+.action-ntn-before:hover::before,
+.action-ntn:hover::after {
+    display: inline-block;
 }
 
 .checkmark::after {
@@ -65,32 +144,6 @@ body {
 }
 
 
-/* .panel {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 470px;
-    max-width: 100%;
-    margin: 0;
-    background-color: var(--rz-background-color-light);
-    transform: translateX(100%);
-    transition: transform .5s;
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 470px;
-    max-width: 100%;
-    margin: 0;
-    background-color: var(--rz-background-color-light);
-    transform: translateX(100%);
-    transition: transform .5s;
-    display: flex;
-    flex-direction: column;
-} */
 
 .cart-container::-webkit-scrollbar-thumb  {
     background-color: #1f1f1f;
