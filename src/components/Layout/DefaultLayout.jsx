@@ -5,7 +5,7 @@ import Topbar from '../Common/Topbar/Topbar'
 
 const DefaultLayout = ({children}) => {
   return (
-    <div>
+    <div >
         <Topbar/>
         <Header/>
         <div>

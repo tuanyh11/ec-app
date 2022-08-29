@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 @layer components {
 
     .header-nav .header-nav_item:hover a::after {
@@ -161,5 +163,25 @@ body {
 a:hover {
     color: inherit;
 }
+
+.slick-dots li button:before {
+    font-size: 10px!important;
+}
+
+.slick-dots li.slick-active button:before {
+    color: #FF6F61!important;
+    z-index: 99;
+}
+
+.slick-dots li button:hover:before, .slick-dots li button:focus:before {
+    color: #FF6F61!important;
+
+}
+
+
+.slick-dots li {
+    margin:0 0!important;
+}
+
 
 /* header nav */

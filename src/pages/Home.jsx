@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-import { CampaignBar, Banner, Policy, CategoryBanner, CardProduct, Discount } from '../components/';
-import Slider from 'react-slick';
-import { Link } from 'react-router-dom';
 import {
-  RiTruckLine,
-  RiExchangeDollarFill,
-  RiSecurePaymentLine,
-  RiMedalLine,
+  RiArrowLeftSLine, RiArrowRightSLine, RiExchangeDollarFill, RiMedalLine, RiSecurePaymentLine, RiTruckLine
 } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
+import Slider from 'react-slick';
 import { Col, Container, Row } from 'reactstrap';
-import API from '../api'
-import { products as fakeProducts } from '../acssets/fakedata';
+import { posts, products as fakeProducts, razziInstagram, brands } from '../acssets/fakedata';
+import API from '../api';
+import { Banner, CampaignBar, CardProduct, CategoryBanner, Discount, Policy, Review, Razzi, Brand } from '../components/';
+import { GET_ALLPRODUCTS, GET_CATEGORY, GET_DISCOUNT_BANNERS } from '../Queries';
 
 const topCategories = [
   {
@@ -77,19 +75,6 @@ const policy = [
   },
 ];
 
-const QUERY = `query NewQuery {
-  products {
-    edges {
-      node {
-        ... on SimpleProduct {
-          id
-          name
-          price
-        }
-      }
-    }
-  }
-}`
 
 const discouts = [
   {
@@ -102,49 +87,156 @@ const discouts = [
   }
 ]
 
+const settingsSlickTopCate = {
+  dots: false,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+};
+
+const settingsdiscountBanner = {
+  dots: false,
+  fade: true,
+  infinite: false,
+  speed: 300,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  nextArrow: <SampleNextArrow/>,
+  prevArrow: <SamplePrevArrow/>
+}
+
+const settingsBrand = {
+  dots: true,
+  infinite: false,
+  speed: 800,
+  slidesToShow: 4,
+  slidesToScroll: 4,
+  appendDots: dots => <ul  style={{bottom: '-55px'}}>{dots}</ul>,
+
+}
+
+const settingsReview = {
+  dots: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 3,
+  slidesToScroll: 3,
+  appendDots: dots => <ul className='!bottom-[-10px]' style={{bottom: '-70px'}}>{dots}</ul>,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        initialSlide: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        speed: 500,
+      }
+    }
+  ]
+};
+
+function SampleNextArrow(props) {
+  const { onClick } = props;
+  return (
+    <div
+      className={`absolute top-[50%] translate-y-[-50%] bg-[#fff] right-0 z-10 opacity-50 hover:!opacity-100 transition`}
+      onClick={onClick}
+    >
+      <button className='w-[42px] h-[42px] flex items-center justify-center'><RiArrowRightSLine className='w-5' /></button>
+    </div>
+  );
+}
+
+function SamplePrevArrow(props) {
+  const {onClick} = props;
+  return (
+    <div
+      className={`absolute top-[50%] translate-y-[-50%] bg-[#fff] left-0 z-10 opacity-50 hover:!opacity-100 transition`}
+      onClick={onClick}
+
+    >
+      <button className='w-[42px] h-[42px] flex items-center justify-center'><RiArrowLeftSLine className='w-5' /></button>
+    </div>
+  );
+}
+
 const Home = () => {
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+
 
   const [filter, setFilter] = useState('womens');
 
-  const [products, setProducts] = useState([])
+  const [dataField, setDataField] = useState({
+    categories: [],
+    discountBanner: [],
+    products: [],
+    reviews: [] 
+  })
 
-  // useEffect(() => {
 
-  //     (async (text) => {
-  //       try {
-  //           const results = await API.post('http://localhost/wordpress/graphql', {
-  //              query:  `${text}`
-  //           })
-  //           const category = await API.post('http://localhost/wordpress/graphql', {
-  //              query:  `query NewQuery {
-  //               productCategories {
-  //                 nodes {
-  //                   id
-  //                   name
-  //                   parentId
-  //                 }
-  //               }
-  //             }`
-  //           })
-  //           console.log(category)
-  //           const newRes =  results?.data?.data?.products?.edges?.map((item) => {
-  //             const {node} = item
-  //             return node
-  //           })
-  //           setProducts(newRes)
-  //       } catch (error) {
-  //           return error
-  //       }
-  //     })(QUERY)
-  // }, []) 
+  useEffect(() => {
 
+      (async () => {
+        try {
+            const productRes = await API.post('http://localhost/wordpress/graphql', {
+               query:  GET_ALLPRODUCTS
+            })
+            const categories = await API.post('http://localhost/wordpress/graphql', {
+               query: GET_CATEGORY
+            })
+
+            const discountBanner = await API.post('http://localhost/wordpress/graphql', {
+              query: GET_DISCOUNT_BANNERS
+            })
+
+            const newCategories = categories.data?.data?.productCategories?.nodes
+            
+
+            const newDiscountBanner = discountBanner.data?.data.allBanner.nodes?.map((node) => {
+              const {discount_banner, id} = node
+              return {...discount_banner, id}
+            })
+
+            const newProducts =  productRes?.data?.data?.products?.edges?.map((item) => {
+              const {node} = item
+              return node
+            })
+
+
+            const reviews =  posts?.products?.nodes.map((node) => {
+              const review = node.reviews.nodes
+              const categoryReview = node.productCategories.nodes[0]
+              return {...node, image: node.image, review, categoryReview}
+            }).map(item => {
+              const lastReview = item?.review?.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+              return {...item, review: lastReview[0] ? lastReview[0] : null}
+            })
+
+            const lastReview = reviews.sort((a, b) => new Date(b.review.date).getTime() - new Date(a.review.date).getTime()).slice(0, 6)
+
+            setDataField({...dataField, categories: newCategories, discountBanner: newDiscountBanner, products: newProducts, reviews:  lastReview})
+           
+        } catch (error) {
+            console.error(error)
+        }
+      })()
+  }, []) 
 
   return (
     <div>
@@ -154,7 +246,7 @@ const Home = () => {
       />
       <section className="lg:!hidden">
         <div>
-          <Slider {...settings}>
+          <Slider {...settingsSlickTopCate}>
             {topCategories.map((category, i) => (
               <Banner key={i} data={category} />
             ))}
@@ -246,7 +338,7 @@ const Home = () => {
       {/* Top month seller  */}
 
       <section className="pt-[88px] ">
-        <Container>
+        <Container fluid="xl">
           <Row>
             <Col lg={12}>
               <div className="flex justify-center text-4xl font-medium pb-[32px]">
@@ -275,10 +367,10 @@ const Home = () => {
           
           {/* product */}
 
-          <Row fluid="xl">
+          <Row >
               {fakeProducts.map((item, i) => (
                 <Col lg={3} md={4} className="mb-[20px]" key={i}>
-                  <CardProduct data={item}/>
+                  <CardProduct data={item} />
                 </Col>
               ))}
           </Row>
@@ -292,7 +384,90 @@ const Home = () => {
       {/* discount */}
 
       <section>
-        {/* <Discount/> */}
+        <Slider {...settingsdiscountBanner}>
+          {dataField.discountBanner.map((item) => (
+            <Discount key={item.id} data={item}/>
+          ))}
+        </Slider>
+      </section>
+
+      {/* reviews */}
+      <section className="mb-[165px]">
+        <Container fluid="xl">
+          <Row>
+            <Col lg={12}>
+              <div className='p-[105px_0px_70px]'>
+                <p className='upercase text-sm font-medium text-[#a0a0a0] mb-[15px]'>WHAT BUYERS SAY</p>
+                <h1 className="text-4xl font-medium leading-[1]">Lastest Buyers Review</h1>
+              </div>
+            </Col>
+            <Col lg={12}>
+              <div className="mr-[-30px]">
+                <Slider {...settingsReview}>
+                {dataField.reviews.map((post) => (
+                    <div lg={4} key={post.id}>
+                        <Review data={post}></Review>
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+            </Col>
+          </Row>
+
+        </Container>
+      </section>
+
+      <section className="pt-[85px] bg-[#f5f5f5]">
+        <Container fluid="xl">
+          <Row>
+            <Col lg={12}>
+                <div className="p-[15px] pb-[64px] ">
+                  <h2 className="mb-[21px] text-4xl font-medium text-[#111111]">@Razzi</h2>
+                  <p className="text-lg font-normal text-[#525252]">The best thing about a monochrome colour scheme</p>
+                </div>
+            </Col>
+            <Col lg={12}>
+                <Row className='mb-[-105px] pr-[7px] pl-[7px]'>
+                  {razziInstagram.map((item, i) => (
+                    <Col key={i} lg={2} md={4} className="mt-[12px] pr-[5px] pl-[5px]" >
+                      <a href={item.link} className="hover:opacity-90 transition" >
+                        <Razzi data={item}/>
+                      </a>
+                    </Col>
+                  ))}
+                </Row>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+
+      <section>
+        <Container fluid="xl">
+          <div className="p-[190px_0_68px]">
+            <Row className="hidden lg:flex">
+                {brands.map((item, i) => (
+                  <Col key={i} >
+                    <Link  to={`/${item.slug}`}>
+                      <Brand  data={item}/>
+                    </Link>
+                  </Col>
+                ))} 
+            </Row>
+            <Row className="lg:hidden">
+              <Col lg={12}>
+                <Slider {...settingsBrand}>
+                  {brands.map((item, i) => (
+                      <div key={i}>
+                        <Link to={`/${item.slug}`}>
+                          <Brand  data={item}/>
+                        </Link>
+                      </div>
+                    ))} 
+                </Slider>
+              </Col>
+            </Row>
+          </div>
+        </Container>
       </section>
     </div>
   );
