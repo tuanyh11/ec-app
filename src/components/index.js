@@ -16,6 +16,8 @@ export {default as Review } from './UI/Review/Review'
 export {default as Razzi } from './UI/Razzi/Razzi'
 export {default as Brand } from './UI/Brand/Brand'
 export {default as Dropdown } from './UI/Dropdown/Dropdown'
+export {default as Sidebar } from './UI/Sidebar/Sidebar'
+
 
 export {default as CampaignBar } from './Common/CampaignBar/CampaignBar'
 

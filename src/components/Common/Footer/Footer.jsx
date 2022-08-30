@@ -168,9 +168,8 @@ const Footer = ({ data }) => {
                             title={item.title}
                             childrens={getFooterInfoItem(item.id)}
                             onToggle={handleToggle}
-                            toggle={toggle}
-                            index={i}
-                            configChildrenItem={(data, index) => (
+                            toggle={toggle.includes(i)}
+                            renderBody={(data, index) => (
                               <DropDownItem key={index} index={index}  root={data} childrens={[]} />
                             )}
                           />
