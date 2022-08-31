@@ -17,7 +17,7 @@ const Nav = ({data}) => {
             after:bg-primary after:left-0  after:right-0 after:bottom-[-2px] after:w-0 after:opacity-0 after:ease after:transition-all after:duration-500 '
                 to={`/${item?.slug}`}
             >
-                {item?.title}
+                {item?.name}
             </Link>
             </li>
         ))}

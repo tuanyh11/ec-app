@@ -17,27 +17,82 @@ query NewQuery {
   }
 `
 
-export const GET_CATEGORY = `query NewQuery {
+export const GET_ALLCATEGORIES = `query NewQuery {
     productCategories {
       nodes {
         id
         name
         parentId
-      }
-    }
-  }`
-
-export const GET_ALLPRODUCTS = `query NewQuery {
-    products {
-      edges {
-        node {
-          ... on SimpleProduct {
-            id
-            name
-            price
-          }
+        description
+        image {
+          mediaItemUrl
         }
       }
     }
   }`
 
+export const GET_ALLPRODUCTS = `
+query GetAllProducts {
+  products {
+    nodes {
+      ... on SimpleProduct {
+        id
+        name
+        image {
+          id
+          mediaItemUrl
+        }
+        galleryImages {
+          nodes {
+            id
+            mediaItemUrl
+          }
+        }
+        price
+      }
+      ... on VariableProduct {
+        id
+        name
+        image {
+          id
+          mediaItemUrl
+        }
+        price
+        galleryImages {
+          nodes {
+            id
+            mediaItemUrl
+          }
+        }
+      }
+    }
+  }
+}
+`
+
+export const GET_ALLPAGES = `
+query GetAllPage {
+  allPages:allPagesCategories {
+    pages:nodes {
+      id
+      name
+      slug
+    }
+  }
+}
+`
+export const GET_ALLBANNERS = `
+query GetAllCategories {
+  allBanner {
+    nodes {
+      banner {
+        image {
+          mediaItemUrl
+        }
+        url
+        headline
+        url
+      }
+    }
+  }
+}`

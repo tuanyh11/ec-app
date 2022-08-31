@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import API from '../../../api'
+import {GET_ALLPAGES} from '../../../Queries'
 import {
   OffLayer,
   Pannel,
@@ -597,20 +598,10 @@ function Header() {
       (
         async() => {
             try {
-                const pages = await API.post('http://localhost/wordpress/graphql', {
-                  query: `
-                    query NewQuery {
-                      pages {
-                        nodes {
-                          title
-                          slug
-                        }
-                      }
-                    }
-                  `
+                const res = await API.post('https://72.arrowhitech.net/tn3/test_an/wordpress/graphql', {
+                  query: GET_ALLPAGES
                 })
-                const newPages = pages.data?.data?.pages?.nodes
-                setPages(newPages?.reverse())
+                setPages([...res.data.data.allPages.pages])
               } catch (error) {
                 window.confirm(error)
               }
@@ -623,6 +614,7 @@ function Header() {
     setIsTurnOn(true);
     setSelectPanel(title);
   };
+
 
   return (
     <div className="h-[90px] flex items-center">

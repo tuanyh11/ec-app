@@ -8,49 +8,9 @@ import { Col, Container, Row } from 'reactstrap';
 import { posts, products as fakeProducts, razziInstagram, brands } from '../acssets/fakedata';
 import API from '../api';
 import { Banner, CampaignBar, CardProduct, CategoryBanner, Discount, Policy, Review, Razzi, Brand } from '../components/';
-import { GET_ALLPRODUCTS, GET_CATEGORY, GET_DISCOUNT_BANNERS } from '../Queries';
+import { GET_ALLPRODUCTS, GET_ALLCATEGORIES, GET_DISCOUNT_BANNERS, GET_ALLBANNERS } from '../Queries';
 
-const topCategories = [
-  {
-    img: 'https://i0.wp.com/demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2021/09/home1-banner-carousels-1.jpg?resize=670%2C692&ssl=1',
-    name: 'womens',
-  },
-  {
-    img: 'https://i0.wp.com/demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/home1-banner-carousels-2.jpg?resize=670%2C692&ssl=1',
-    name: 'mens',
-  },
-  {
-    img: 'https://i0.wp.com/demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/home1-banner-carousels-3.jpg?resize=670%2C692&ssl=1',
-    name: 'kids',
-  },
-];
 
-const categoriesBanner = [
-  {
-    title: 'Bags Collection',
-    pathName: '/shop/women/bags',
-    imgUrl:
-      'https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/home1-banner-grid-2.jpg',
-  },
-  {
-    title: 'Printed Men’s \n Shirt',
-    pathName: '/shop/women/bags',
-    imgUrl:
-      'https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/home1-banner-grid-1.jpg',
-  },
-  {
-    title: 'Basic Women’s \n Dresses',
-    pathName: '/shop/women/bags',
-    imgUrl:
-      'https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/home1-banner-grid-3.jpg',
-  },
-  {
-    title: 'Sweatshirt',
-    pathName: '/shop/women/bags',
-    imgUrl:
-      'https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/home1-banner-grid-6.jpg',
-  },
-];
 
 const policy = [
   {
@@ -186,7 +146,10 @@ const Home = () => {
     categories: [],
     discountBanner: [],
     products: [],
-    reviews: [] 
+    reviews: [],
+    categoriesBanner: [],
+    banners: [],
+    parentCategories: []
   })
 
 
@@ -194,29 +157,43 @@ const Home = () => {
 
       (async () => {
         try {
-            const productRes = await API.post('http://localhost/wordpress/graphql', {
+            const productRes = await API.post('https://72.arrowhitech.net/tn3/test_an/wordpress/graphql', {
                query:  GET_ALLPRODUCTS
+
             })
-            const categories = await API.post('http://localhost/wordpress/graphql', {
-               query: GET_CATEGORY
+            const categoriesRes = await API.post('https://72.arrowhitech.net/tn3/test_an/wordpress/graphql', {
+               query: GET_ALLCATEGORIES 
             })
 
-            const discountBanner = await API.post('http://localhost/wordpress/graphql', {
-              query: GET_DISCOUNT_BANNERS
-            })
+            // const discountBanner = await API.post('http://localhost/wordpress/graphql', {
+            //   query: GET_DISCOUNT_BANNERS
+            // })
 
-            const newCategories = categories.data?.data?.productCategories?.nodes
+
+            const allCategories = categoriesRes.data?.data?.productCategories?.nodes
             
+            const parentCategories = allCategories.filter(item => item.parentId === null).reverse()
 
-            const newDiscountBanner = discountBanner.data?.data.allBanner.nodes?.map((node) => {
-              const {discount_banner, id} = node
-              return {...discount_banner, id}
-            })
+            setFilter(parentCategories[0].name)
 
-            const newProducts =  productRes?.data?.data?.products?.edges?.map((item) => {
-              const {node} = item
-              return node
-            })
+            const bannersRes = await API.post('https://72.arrowhitech.net/tn3/test_an/wordpress/graphql', {
+              query: GET_ALLBANNERS 
+           })
+
+           const banners = bannersRes.data.data.allBanner.nodes.map(item => {
+            return {...item.banner}
+           })
+
+            // const newDiscountBanner = discountBanner.data?.data.allBanner.nodes?.map((node) => {
+            //   const {discount_banner, id} = node
+            //   return {...discount_banner, id}
+            // })
+           console.log(allCategories)
+
+            // const newProducts =  productRes?.data?.data?.products?.edges?.map((item) => {
+            //   const {node} = item
+            //   return node
+            // })
 
 
             const reviews =  posts?.products?.nodes.map((node) => {
@@ -230,13 +207,15 @@ const Home = () => {
 
             const lastReview = reviews.sort((a, b) => new Date(b.review.date).getTime() - new Date(a.review.date).getTime()).slice(0, 6)
 
-            setDataField({...dataField, categories: newCategories, discountBanner: newDiscountBanner, products: newProducts, reviews:  lastReview})
+            setDataField({...dataField, categories: [], reviews:  lastReview, banners: banners, parentCategories: parentCategories})
            
         } catch (error) {
             console.error(error)
         }
       })()
   }, []) 
+
+  console.log(dataField)
 
   return (
     <div>
@@ -247,7 +226,7 @@ const Home = () => {
       <section className="lg:!hidden">
         <div>
           <Slider {...settingsSlickTopCate}>
-            {topCategories.map((category, i) => (
+            {dataField.categories.reverse(  ).map((category, i) => (
               <Banner key={i} data={category} />
             ))}
           </Slider>
@@ -256,7 +235,7 @@ const Home = () => {
       {/* banner */}
       <section className="hidden lg:block">
         <div className="flex items-center">
-          {topCategories.map((category, i) => (
+          {dataField.categories.map((category, i) => (
             <Link key={i} to={`/shop/${category.name}`}>
               <Banner data={category} />
             </Link>
@@ -301,7 +280,7 @@ const Home = () => {
       <section>
         <Container fluid="xl">
           <Row>
-            {categoriesBanner.map((item, i) => {
+            {dataField.banners.map((item, i) => {
               const left = {
                 titleContent: 'text-white',
                 buttonContent: 'text-white ',
@@ -317,7 +296,7 @@ const Home = () => {
               if (navi)
                 return (
                   <Col key={i} lg={4} md={6} sm={12} className="mt-[20px]">
-                    <Link to={item.pathName}>
+                    <Link to={item.url}>
                       <CategoryBanner style={left} data={item} />
                     </Link>
                   </Col>
@@ -325,7 +304,7 @@ const Home = () => {
               else
                 return (
                   <Col key={i} lg={8} md={6} sm={12} className="mt-[20px]">
-                    <Link to={item.pathName}>
+                    <Link to={item.url}>
                       <CategoryBanner style={right} data={item} />
                     </Link>
                   </Col>
@@ -349,7 +328,7 @@ const Home = () => {
               <div>
                 {/* Home category */}
                 <div className="flex justify-center">
-                  {topCategories.map((item, i) => (
+                  {dataField.parentCategories.map((item, i) => (
                     <div key={i} onClick={() => setFilter(item.name)}>
                       <p
                         className={`mr-8 capitalize font-medium relative cursor-pointer text-base hover:text-primary leadding-1 leading-[18px] afterStyle hover:after:!bg-primary hover:after:w-full hover:after:opacity-100 ${
