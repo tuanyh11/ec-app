@@ -93,6 +93,13 @@ query GetAllProducts {
             mediaItemUrl
           }
         }
+        variations {
+          nodes {
+            price
+            name
+            id
+          }
+        }
       }
     }
   }

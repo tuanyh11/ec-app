@@ -86,9 +86,17 @@ const Shop = () => {
 
     if(selected.price.length > 0) {
       const ragePrice = selected.price.map(item => item.split(/[*+-]/)).map(a => a.map(item => currency(item).value ))
-      temp = temp.filter((product) =>  ragePrice.map(item => product.price)) 
-      // console.log(temp)
-      // ?.nodes.some(attribute => attribute.options.some(item => currency(item.trim().split(/[*+-]/)[0]).value -  currency))
+      temp = temp.filter((product) =>  ragePrice.some(item => {
+        const fisrtIndex = item.findIndex(item => true)
+        const lastIndex = item.findLastIndex(item => true)
+        if(product.variations) {
+          if(item[lastIndex] === 0) return product.variations.nodes.some(a => currency(a.price).value > item[fisrtIndex])
+          return product.variations.nodes.some(a => currency(a.price).value >= item[fisrtIndex] && currency(a.price).value <= item[lastIndex])
+        } else {
+          if(item[lastIndex] === 0) return currency(product.price).value > item[fisrtIndex]
+          return currency(product.price).value >= item[fisrtIndex] && currency(product.price).value <= item[lastIndex]
+        }
+      })) 
     }
 
     // console.log(currency(item).value)
@@ -97,8 +105,8 @@ const Shop = () => {
   }
 // item.options.some(option => selected.categories.includes(option) ) 
 
-
-  useEffect(() => {
+  console.log(showProducts)
+  useEffect(() => { 
     updateProducts()
   }, [selected, products])
 
@@ -139,7 +147,7 @@ const Shop = () => {
 
                     <div>
                       <Row>
-                        {showProducts.map(item => (
+                        {showProducts?.map(item => (
                           <Col lg={3} md={4} className="mb-[20px]" key={item.id}>
                             <CardProduct data={item} />
                           </Col>
