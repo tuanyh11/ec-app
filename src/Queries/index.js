@@ -1,43 +1,55 @@
 
-export const GET_DISCOUNT_BANNERS = `
-query NewQuery {
-    allBanner {
-      nodes {
-        discount_banner {
-          btnname
-          discountdate
-          fieldGroupName
-          image
-          title
-          slug
-        }
-        id
-      }
-    }
-  }
-`
-
-export const GET_ALLCATEGORIES = `query NewQuery {
-    productCategories {
-      nodes {
-        id
-        name
-        parentId
-        description
+export const GET_DISCOUNTBANNERS = `
+{
+  allDiscountBanner {
+    nodes {
+      id
+      discountBanner {
+        headline
+        expiration
+        url
+        actions
         image {
           mediaItemUrl
         }
       }
     }
-  }`
+  }
+}`
+
+export const GET_ALLCATEGORIES = `{
+  productCategories(first: 20) {
+    nodes {
+      id
+      name
+      parentId
+      description
+      image {
+        mediaItemUrl
+      }
+      products{
+        nodes{
+          id
+        }
+      }
+    }
+  }
+}`
 
 export const GET_ALLPRODUCTS = `
 query GetAllProducts {
-  products {
+  products(first: 60) {
     nodes {
       ... on SimpleProduct {
         id
         name
+        attributes {
+          nodes {
+            options
+            name
+            id
+          }
+        }
         image {
           id
           mediaItemUrl
@@ -48,14 +60,31 @@ query GetAllProducts {
             mediaItemUrl
           }
         }
+        productCategories {
+          nodes {
+            name
+          }
+        }
         price
       }
       ... on VariableProduct {
         id
         name
+        attributes {
+          nodes {
+            options
+            name
+            id
+          }
+        }
         image {
           id
           mediaItemUrl
+        }
+        productCategories {
+          nodes {
+            name
+          }
         }
         price
         galleryImages {
@@ -96,3 +125,26 @@ query GetAllCategories {
     }
   }
 }`
+
+export const GET_LASTREVIEWS = `
+{
+  products(where: {}) {
+    edges {
+      node {
+        id
+        name
+        reviews(first: 1) {
+          edges {
+            rating
+            node {
+              id
+              content
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`
+

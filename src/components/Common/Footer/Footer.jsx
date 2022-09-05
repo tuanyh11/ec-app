@@ -169,7 +169,7 @@ const Footer = ({ data }) => {
                             childrens={getFooterInfoItem(item.id)}
                             onToggle={handleToggle}
                             toggle={toggle.includes(i)}
-                            renderBody={(data, index) => (
+                            renderBody={(data, type, index) => (
                               <DropDownItem key={index} index={index}  root={data} childrens={[]} />
                             )}
                           />

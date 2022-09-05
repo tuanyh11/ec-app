@@ -2,16 +2,16 @@ import React from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 
 const Dropdown = ({
-  root = [],
   title,
   type = 'root',
   level = 2,
   index = 0,
-  toggle = null,
+  toggle,
   onToggle = () => {},
   childrens = [],
-  renderHeader = null,
-  renderBody = null,
+  renderHeader,
+  renderBody,
+  headerMenu,
   style = {
     container: '',
     containerHeader: '',
@@ -28,6 +28,7 @@ const Dropdown = ({
           : 'pb-[17px] border-b-[1px] border-solid border-[#444] mb-[21px]'
       }`}
     >
+      
       {renderHeader ? (
         renderHeader()
       ) : (
@@ -40,11 +41,12 @@ const Dropdown = ({
         >
           <h2
             className={`${
-              style.title ? style.title : 'uppercase text-[13px] font-medium'
+              style.title ? style.title : 'uppercase text-[13px] font-medium '
             }`}
           >
             {title}
           </h2>
+          
           {type === 'root' && (
             <div onClick={() => onToggle(index)} className="p-2 cursor-pointer">
               <RiArrowDownSLine
@@ -54,20 +56,24 @@ const Dropdown = ({
               />
             </div>
           )}
+          
         </div>
+        
       )}
+      
 
       {/* menu */}
       {level === 2 && childrens.length > 0 ? (
         <div
-          className={`transition-all duration-[300ms] ease  overflow-auto  ${
-            toggle ? 'max-h-[100vh] ' : 'max-h-0 '
-          } ${style.menu}`}
+          className={`transition-all duration-[300ms] ease  overflow-auto category-scrollbar ${toggle ? 'max-h-[100vh] ' : 'max-h-0 '} ${style.menu}`}
         >
-          {renderBody &&
-            childrens.map((items, index) =>
-              renderBody({ ...items, onToggle, toggle }, index)
+          {headerMenu && <div>{headerMenu()}</div>}
+          <div className={` overflow-y-auto category-scrollbar max-h-[100vh] ${title.toUpperCase() === 'SIZE' && 'flex overflow-visible flex-wrap'} ${title.toUpperCase() === 'BRAND' && 'max-h-[390px]'}`}>
+            {renderBody &&
+              childrens.map((items, index) =>
+                renderBody({ ...items, onToggle, toggle },title , index)
             )}
+          </div>
         </div>
       ) : null}
     </div>

@@ -37,6 +37,7 @@
 body {
     font-family: 'Jost', sans-serif;
     overflow-x: hidden;
+    height: inherit;
 }
 
 .action-ntn:nth-child(2) {
@@ -46,6 +47,75 @@ body {
 .action-ntn:nth-child(3) {
     transition-delay: 100ms;
 }
+
+.slick-slide {
+    height: auto!important;
+}
+.slick-slide > div {
+    height: 100%;
+}
+
+.slick-track {
+    display: flex!important;;
+    flex-direction: row;
+    flex-wrap: nowrap ;
+    align-items: stretch
+}
+
+
+.checkbox-container{
+    cursor: pointer;
+}
+
+.checkbox-container:hover label {
+    color: #1f1f1f;
+}
+
+.checkbox-container input[type='checkbox']:checked + span::before {
+    content: "\002714";
+    background: #1f1f1f;
+    color: white;
+}
+
+.checkbox-container.color input[type='checkbox']:checked + span::before {
+    content: "\002714";
+    background: none;
+    color: white;
+}
+
+.checkbox-container input[type='checkbox']:checked ~ label,
+.checkbox-container.color input[type='checkbox']:checked ~ label{
+    color: #1f1f1f;
+}
+
+.checkbox-container.size input[type='checkbox']:checked ~ label {
+   border: 1px solid #000000!important;
+}
+
+
+    
+
+
+
+.checkbox-container span::before {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox-container:hover span::before {
+    content: "\002714";
+    background: #1f1f1f;
+    color: white;
+}
+
+.checkbox-container.color:hover span::before{
+    content: "\002714";
+    color: white;
+    background: none;
+}
+
+
 
 .action-ntn-before::before {
     content: attr(datatype) !important;
@@ -145,6 +215,21 @@ body {
     background-image: linear-gradient(135deg,rgba(255,255,255,0.2) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0.2) 75%,transparent 75%,transparent);
 }
 
+
+.category-scrollbar::-webkit-scrollbar-thumb {
+    /* background-color:#e2e2e2; */
+    background-color: #1f1f1f;
+
+}
+
+.category-scrollbar::-webkit-scrollbar-track {
+    background-color: #1f1f1f;
+    background-color:#e2e2e2;
+}
+
+.category-scrollbar::-webkit-scrollbar {
+    width: 3px;
+}
 
 
 .cart-container::-webkit-scrollbar-thumb  {

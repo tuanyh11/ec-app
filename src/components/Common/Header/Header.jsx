@@ -3,6 +3,7 @@ import { Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import API from '../../../api'
 import {GET_ALLPAGES} from '../../../Queries'
+import {useCartSlice} from '../../../Features/hooks'
 import {
   OffLayer,
   Pannel,
@@ -561,7 +562,6 @@ const cartData = [
   },
 ];
 
-const cartQuantity = 3;
 const wishlistQuantity = 4;
 
 const headerActions = [
@@ -587,11 +587,15 @@ const headerActions = [
   },
 ];
 
+
+
 function Header() {
   
   const [selectPanel, setSelectPanel] = useState('');
   const [isTurnOn, setIsTurnOn] = useState(false);
   const [pages, setPages] = useState([])
+
+  const [cartData] = useCartSlice()
 
   useEffect(() => {
 
@@ -614,7 +618,6 @@ function Header() {
     setIsTurnOn(true);
     setSelectPanel(title);
   };
-
 
   return (
     <div className="h-[90px] flex items-center">
@@ -649,7 +652,7 @@ function Header() {
               {...selectPanel}
               title={selectPanel}
             >
-              <CartPanel title={selectPanel} data={cartData} />
+              <CartPanel title={selectPanel} data={cartData}  handleClosePanel={() => setIsTurnOn(false)}/>
             </Pannel>
           )}
 
@@ -701,7 +704,7 @@ function Header() {
                       {title === 'Your Cart' && (
                         <span className="absolute top-[-10px] right-[-4px] min-w-[18px] h-[18px] !bg-primary rounded-[50%] text-white text-xs  flex items-center justify-center !text-center">
                           {' '}
-                          {cartQuantity}
+                          {cartData.cartItems.length}
                         </span>
                       )}
                     </li>

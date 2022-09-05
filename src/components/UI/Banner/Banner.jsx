@@ -5,7 +5,7 @@ const Banner = ({ data }) => {
   return (
     <div className="relative group">
       <div className='after:content-["*"] group-hover:after:bg-rgba-20 after:transition-all after:ease after:absolute after:bg-rgba-30 after:right-0 after:bottom-0 after:top-0 after:left-0 '>
-        <img src={data.image.mediaItemUrl} alt="" className='h-[464px] w-full object-cover' />
+        <img src={data.image.mediaItemUrl} alt="" className='h-full w-full object-cover' />
       </div>
       <div className="p-[0_30px] absolute top-[0] right-[0] w-full  h-full items-center pb-[40px] pt-[30px] flex flex-col ">
         <h2 className="text-5xl mt-auto flex-grow-0 flex-shrink-0 basis-auto  text-white font-medium pt-[35px]">

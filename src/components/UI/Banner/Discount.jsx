@@ -26,7 +26,7 @@ const Discount = ({data}) => {
 
   function updateRemainingTime() {
     const currentDate = new Date()
-    const remainingDate = new Date(data.discountdate)
+    const remainingDate = new Date(data.expiration)
     const seconds = Math.floor((remainingDate.getTime() - currentDate.getTime()) / 1000)
     const minutes = Math.floor(seconds / 60 )
     const hours = Math.floor(minutes / 60)
@@ -44,7 +44,7 @@ const Discount = ({data}) => {
 
   return (
     <div>
-        <div style={{backgroundImage: `url(${data.image})`}} className="h-[550px] bg-cover bg-no-repeat">
+        <div style={{backgroundImage: `url(${data.image.mediaItemUrl})`}} className="h-[550px] bg-cover bg-no-repeat">
             <div className="h-full  flex-col justify-center ml-[950px] flex text-start p-[15px]  ">
                 <h1 className="font-medium text-[32px] leading-[46px] text-[#1f1f1f] mb-[30px]" dangerouslySetInnerHTML={{__html: data.title}}></h1>
                 <div className='flex mb-[52px]'> 
@@ -77,7 +77,7 @@ const Discount = ({data}) => {
                     </div>
                 </div>
                 <div>
-                    <Link to={`/${data.slug}`} className="group inline-flex relative z-10 capitalize items-center p-[0_44px] leading-[54px] bg-[#1f1f1f] hover:text-primary text-white ">
+                    <Link to={`/${data.url}`} className="group inline-flex relative z-10 capitalize items-center p-[0_44px] leading-[54px] bg-[#1f1f1f] hover:text-primary text-white ">
                       Shop Now 
                       <RiArrowRightLine className="ml-2   group-hover:!translate-x-[3px] transition"/>
                     </Link>

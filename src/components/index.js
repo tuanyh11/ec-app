@@ -16,7 +16,12 @@ export {default as Review } from './UI/Review/Review'
 export {default as Razzi } from './UI/Razzi/Razzi'
 export {default as Brand } from './UI/Brand/Brand'
 export {default as Dropdown } from './UI/Dropdown/Dropdown'
-export {default as Sidebar } from './UI/Sidebar/Sidebar'
+export {default as Sidebar } from './UI/Sidebar'
+export {default as InputSearch } from './UI/InputSearch'
+export {default as CartLayer } from './UI/CartLayer/CartLayer'
+export {default as Button } from './UI/Button'
+export {default as ConfirmBox } from './UI/ConfirmBox'
+export {default as Layer } from './UI/Layer'
 
 
 export {default as CampaignBar } from './Common/CampaignBar/CampaignBar'
