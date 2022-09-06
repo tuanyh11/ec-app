@@ -19,6 +19,7 @@ const initialState = {
     isPending: false,
     isRejected: false,
     error: null,
+    success: false,
 }
 
 const policySilce = createSlice({
@@ -31,13 +32,13 @@ const policySilce = createSlice({
 
         [fetchAsyncAllPolicy.rejected]:(state, action) => {
             state.isPending = false
-            state.isRejected = true
-            state.error = action.payload
+            state.error = action.payload.errorMessage
          },
         
         [fetchAsyncAllPolicy.fulfilled]:(state, action) => {
             state.isPending = false
             state.policyItems = action.payload
+            state.success = true;
         }
     }
 })

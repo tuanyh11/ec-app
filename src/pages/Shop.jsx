@@ -1,18 +1,20 @@
-import React, {useState, useEffect, useCallback} from 'react'
-import {Sidebar} from '../components/'
-import { Container, Row, Col} from 'reactstrap'
-import {Link, useLocation, useParams} from 'react-router-dom'
-import {RiArrowDownSLine} from 'react-icons/ri'
-import {CardProduct} from '../components'
-import {useDataSlice} from '../Features/hooks'
-import currency from 'currency.js'
-import API from '../api'
+import React, { useState, useEffect } from 'react';
+import { Sidebar } from '../components/';
+import { Container, Row, Col } from 'reactstrap';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { RiArrowDownSLine } from 'react-icons/ri';
+import { CardProduct } from '../components';
+import {
+  useProductsSlice,
+  useCategoriesSlice,
+  useAttributesSlice,
+} from '../Features/hooks';
+import currency from 'currency.js';
 
-const categoriesBanner = 
-  {
-    imgUrl:
-      'https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/catalog_banner1.jpg',
-  }
+const categoriesBanner = {
+  imgUrl:
+    'https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/catalog_banner1.jpg',
+};
 
 const sortValue = [
   {
@@ -30,143 +32,196 @@ const sortValue = [
   {
     name: 'Sort by latest',
     isDefault: false,
-  }
-]
+  },
+];
 
 const Shop = () => {
 
-  const location = useLocation()
-  
-  const {id} = useParams()
-
+  const location = useLocation();
+  const defaultSelectedCate = location?.state?.url?.split('/') ? location?.state?.url?.split('/') : []
   const [selected, setSelected] = useState({
     categories: [],
     seasons: [],
     price: [],
     color: [],
     brands: [],
-    size: []
-  })
+    size: [],
+  });
 
-  const [showProducts, setShowProducts] = useState([])
 
-  const [ data, actions, dispatch] = useDataSlice()
+  const [showProducts, setShowProducts] = useState([]);
+  const [productData, productActs, dispatch] = useProductsSlice();
+  const [cateData, cateActs] = useCategoriesSlice();
+  const [attData, attActs] = useAttributesSlice();
 
-  const isPending = data.isPending
-  const isRejected = data.isRejected
-  const error = data.isRejected
+  const isPending =
+  productData.isPending || cateData.isPending || attData.isPending;
+  const error = productData.error || cateData.error;
+
 
   useEffect(() => {
-    dispatch(actions.fetchAllAttributes())
-    dispatch(actions.fetchAllCategories())
-    dispatch(actions.fetchAllProducts())
-  }, [])
+    dispatch(attActs.fetchAllAttributes());
+    dispatch(cateActs.fetchAllCategories());
+    dispatch(productActs.fetchAllProducts());
+    setSelected({...selected, categories: [...defaultSelectedCate]})
+  }, []);
 
-  const categories = data.categories
-  const products = data.products 
-  const attributes = data.attributes
-
+  const categories = cateData.categories;
+  const products = productData.products;
+  const attributes = attData.attributes;
 
   const updateProducts = () => {
-    let temp = products
-    if(selected.categories.length > 0) {
-      temp = temp.filter((product) => product.productCategories.nodes.some(item => selected.categories.includes(item.slug)))
+    let temp = products;
+    if (selected.categories.length > 0) {
+      temp = temp.filter((product) =>
+        product.productCategories.nodes.some((item) =>
+          selected.categories.includes(item.slug)
+        )
+      );
     }
 
-    if(selected.size.length > 0) {
-      temp = temp.filter((product) => product.attributes?.nodes.some(attribute => attribute.options.some(item => selected.size.includes(item))))
+    if (selected.size.length > 0) {
+      temp = temp.filter((product) =>
+        product.attributes?.nodes.some((attribute) =>
+          attribute.options.some((item) => selected.size.includes(item))
+        )
+      );
     }
 
-    if(selected.seasons.length > 0) {
-      temp = temp.filter((product) => product.attributes?.nodes.some(attribute => attribute.options.some(item => selected.seasons.includes(item))))
+    if (selected.seasons.length > 0) {
+      temp = temp.filter((product) =>
+        product.attributes?.nodes.some((attribute) =>
+          attribute.options.some((item) => selected.seasons.includes(item))
+        )
+      );
     }
 
-    if(selected.color.length > 0) {
-      temp = temp.filter((product) => product.attributes?.nodes.some(attribute => attribute.options.some(item => selected.color.includes(item))))
+    if (selected.color.length > 0) {
+      temp = temp.filter((product) =>
+        product.attributes?.nodes.some((attribute) =>
+          attribute.options.some((item) => selected.color.includes(item))
+        )
+      );
     }
 
-    if(selected.price.length > 0) {
-      const ragePrice = selected.price.map(item => item.split(/[*+-]/)).map(a => a.map(item => currency(item).value ))
-      temp = temp.filter((product) =>  ragePrice.some(item => {
-        const fisrtIndex = item.findIndex(item => true)
-        const lastIndex = item.findLastIndex(item => true)
-        if(product.variations) {
-          if(item[lastIndex] === 0) return product.variations.nodes.some(a => currency(a.price).value > item[fisrtIndex])
-          return product.variations.nodes.some(a => currency(a.price).value >= item[fisrtIndex] && currency(a.price).value <= item[lastIndex])
-        } else {
-          if(item[lastIndex] === 0) return currency(product.price).value > item[fisrtIndex]
-          return currency(product.price).value >= item[fisrtIndex] && currency(product.price).value <= item[lastIndex]
-        }
-      })) 
+    if (selected.price.length > 0) {
+      const ragePrice = selected.price
+        .map((item) => item.split(/[*+-]/))
+        .map((a) => a.map((item) => currency(item).value));
+      temp = temp.filter((product) =>
+        ragePrice.some((item) => {
+          const fisrtIndex = item.findIndex((item) => true);
+          const lastIndex = item.findLastIndex((item) => true);
+          if (product.variations) {
+            if (item[lastIndex] === 0)
+              return product.variations.nodes.some(
+                (a) => currency(a.price).value > item[fisrtIndex]
+              );
+            return product.variations.nodes.some(
+              (a) =>
+                currency(a.price).value >= item[fisrtIndex] &&
+                currency(a.price).value <= item[lastIndex]
+            );
+          } else {
+            if (item[lastIndex] === 0)
+              return currency(product.price).value > item[fisrtIndex];
+            return (
+              currency(product.price).value >= item[fisrtIndex] &&
+              currency(product.price).value <= item[lastIndex]
+            );
+          }
+        })
+      );
     }
-
-    // console.log(currency(item).value)
-
-    setShowProducts(temp)
-  }
-// item.options.some(option => selected.categories.includes(option) ) 
-  useEffect(() => { 
-    updateProducts()
-  }, [selected, products])
-
+    setShowProducts(temp);
+  };
+  // item.options.some(option => selected.categories.includes(option) )
   useEffect(() => {
-    if(id) setSelected({...selected, categories: [...selected.categories.filter(cate => cate === id), id]})
-  }, [id])
+    updateProducts();
+  }, [selected, products]);
 
+  // useEffect(() => {
+  //   if (id)
+  //     setSelected({
+  //       ...selected,
+  //       categories: [...selected.categories.filter((cate) => cate === id), id],
+  //     });
+  // }, [id]);
 
+  if (error) return <div>{error}</div>;
   return (
-    <div className='lg:p-[60px_80px] p-[60px_0_80px]'>
-      {isPending ? <div>Loading...</div> :
-        isRejected? <div>{error}</div> :
-          <Container fluid="xl">
-            <Row>
-              <Col lg={3} className="hidden lg:block">
-                <div className="pr-[10%]">
-                  <Sidebar categories={categories} setSelected={setSelected} selected={selected}  attributes={attributes} />
+    <div className="lg:p-[60px_80px] p-[60px_0_80px]">
+      {isPending ? (
+        <div>Loading...</div>
+      ) : (
+        <Container fluid="xl">
+          <Row>
+            <Col lg={3} className="hidden lg:block">
+              <div className="pr-[10%]">
+                <Sidebar
+                  categories={categories}
+                  setSelected={setSelected}
+                  selected={selected}
+                  attributes={attributes}
+                />
+              </div>
+            </Col>
+            <Col lg={9}>
+              <div>
+                <div>
+                  <Link to="/shop">
+                    <img
+                      src="https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/catalog_banner1.jpg"
+                      alt=""
+                    />
+                  </Link>
                 </div>
-              </Col>
-              <Col lg={9}>
+
+                <div className="flex items-center justify-between p-[40px_0]">
                   <div>
-                    <div >
-                      <Link to="/shop">
-                        <img src="https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/catalog_banner1.jpg" alt="" />
-                      </Link>
-                    </div>
-
-                    <div className="flex items-center justify-between p-[40px_0]">
-                      <div >
-                        <h1 className="text-4xl font-medium capitalize">{location.pathname.replaceAll('/', ' ')}</h1>
-                      </div>
-
-                      <div className="relative cursor-pointer ">
-                        <select name="" id="" className='p-[12px_46px] text-lg border text-[#767676] outline-none  cursor-pointer appearance-none'>
-                          {sortValue.map((value, i) => {
-                            return <option value={value.name} key={i} defaultValue={value.isDefault}>{value.name}</option>
-                          })}
-                        </select>
-                        <RiArrowDownSLine className="absolute top-[50%] right-[15px] translate-y-[-50%]"/>
-                      </div>
-                    </div>
-
-                    <div>
-                      <Row>
-                        {showProducts?.map(item => (
-                          <Col lg={3} md={4} className="mb-[20px]" key={item.id}>
-                            <CardProduct data={item} />
-                          </Col>
-                        ))}
-                      </Row>
-                    </div>
+                    <h1 className="text-4xl font-medium capitalize">
+                      {location.pathname.replaceAll('/', ' ')}
+                    </h1>
                   </div>
 
+                  <div className="relative cursor-pointer ">
+                    <select
+                      name=""
+                      id=""
+                      className="p-[12px_46px] text-lg border text-[#767676] outline-none  cursor-pointer appearance-none"
+                    >
+                      {sortValue.map((value, i) => {
+                        return (
+                          <option
+                            value={value.name}
+                            key={i}
+                            defaultValue={value.isDefault}
+                          >
+                            {value.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    <RiArrowDownSLine className="absolute top-[50%] right-[15px] translate-y-[-50%]" />
+                  </div>
+                </div>
 
-              </Col>
-            </Row>
-
-          </Container>
-      }
+                <div>
+                  <Row>
+                    {showProducts?.map((item) => (
+                      <Col lg={3} md={4} className="mb-[20px]" key={item.id}>
+                        <CardProduct data={item} />
+                      </Col>
+                    ))}
+                  </Row>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Shop
+export default Shop;

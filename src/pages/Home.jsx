@@ -1,18 +1,30 @@
 import { useEffect, useState } from 'react';
-import {
-  RiArrowLeftSLine, RiArrowRightSLine, RiExchangeDollarFill, RiMedalLine, RiSecurePaymentLine, RiTruckLine
-} from 'react-icons/ri';
+import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import { Col, Container, Row } from 'reactstrap';
 import { razziInstagram, brands } from '../acssets/fakedata';
-import { Banner, CampaignBar, CardProduct, CategoryBanner, Discount, Policy, Review, Razzi, Brand } from '../components/';
-import { useDataSlice, usePolicy } from '../Features/hooks';
+import {
+  Banner,
+  CampaignBar,
+  CardProduct,
+  CategoryBanner,
+  Discount,
+  Policy,
+  Review,
+  Razzi,
+  Brand,
+} from '../components/';
+import {
+  useCategoriesSlice,
+  usePolicySlice,
+  useProductsSlice,
+  useBannerSlice,
+  useReviewSlice,
+} from '../Features/hooks';
 
 // ck_f02c4b788ca1e801c2dedde08c03bd99f8dc3967
 // cs_bf7f0d0b38e00780c620cfe476be1afb63cdb300
-
-
 
 const settingsSlickTopCate = {
   dots: false,
@@ -29,9 +41,9 @@ const settingsdiscountBanner = {
   speed: 300,
   slidesToShow: 1,
   slidesToScroll: 1,
-  nextArrow: <SampleNextArrow/>,
-  prevArrow: <SamplePrevArrow/>
-}
+  nextArrow: <SampleNextArrow />,
+  prevArrow: <SamplePrevArrow />,
+};
 
 const settingsBrand = {
   dots: true,
@@ -39,9 +51,8 @@ const settingsBrand = {
   speed: 800,
   slidesToShow: 4,
   slidesToScroll: 4,
-  appendDots: dots => <ul  style={{bottom: '-55px'}}>{dots}</ul>,
-
-}
+  appendDots: (dots) => <ul style={{ bottom: '-55px' }}>{dots}</ul>,
+};
 
 const settingsReview = {
   dots: true,
@@ -49,7 +60,11 @@ const settingsReview = {
   speed: 500,
   slidesToShow: 3,
   slidesToScroll: 3,
-  appendDots: dots => <ul className='!bottom-[-10px]' style={{bottom: '-70px'}}>{dots}</ul>,
+  appendDots: (dots) => (
+    <ul className="!bottom-[-10px]" style={{ bottom: '-70px' }}>
+      {dots}
+    </ul>
+  ),
   responsive: [
     {
       breakpoint: 1024,
@@ -57,16 +72,16 @@ const settingsReview = {
         slidesToShow: 3,
         slidesToScroll: 3,
         infinite: true,
-        dots: true
-      }
+        dots: true,
+      },
     },
     {
       breakpoint: 768,
       settings: {
         slidesToShow: 2,
         slidesToScroll: 2,
-        initialSlide: 2
-      }
+        initialSlide: 2,
+      },
     },
     {
       breakpoint: 480,
@@ -74,9 +89,9 @@ const settingsReview = {
         slidesToShow: 1,
         slidesToScroll: 1,
         speed: 500,
-      }
-    }
-  ]
+      },
+    },
+  ],
 };
 
 function SampleNextArrow(props) {
@@ -86,57 +101,79 @@ function SampleNextArrow(props) {
       className={`absolute top-[50%] translate-y-[-50%] bg-[#fff] right-0 z-10 opacity-50 hover:!opacity-100 transition`}
       onClick={onClick}
     >
-      <button className='w-[42px] h-[42px] flex items-center justify-center'><RiArrowRightSLine className='w-5' /></button>
+      <button className="lg:w-[42px] w-[25px] h-[42px] flex items-center justify-center">
+        <RiArrowRightSLine className="w-5" />
+      </button>
     </div>
   );
 }
 
 function SamplePrevArrow(props) {
-  const {onClick} = props;
+  const { onClick } = props;
   return (
     <div
       className={`absolute top-[50%] translate-y-[-50%] bg-[#fff] left-0 z-10 opacity-50 hover:!opacity-100 transition`}
       onClick={onClick}
-
     >
-      <button className='w-[42px] h-[42px] flex items-center justify-center'><RiArrowLeftSLine className='w-5' /></button>
+      <button className="lg:w-[42px] w-[25px] h-[42px] flex items-center justify-center">
+        <RiArrowLeftSLine className="w-5" />
+      </button>
     </div>
   );
 }
 
 const Home = () => {
+  const [cateData, cateActs, dispatch] = useCategoriesSlice();
+  const [policyData, policyActs] = usePolicySlice();
+  const [productData, productsActs] = useProductsSlice();
+  const [bannerData, bannerActs] = useBannerSlice();
+  const [reviewData, reviewActs] = useReviewSlice();
 
-  const [ data, actions, dispatch] = useDataSlice()
-  const [policy, policyAct] = usePolicy()
+  const banner = bannerData.banner;
+  const lastestReviews = reviewData.lastestReviews;
+  const policies = policyData.policyItems;
+  const rootCategories = cateData.rootCategories;
+  const discountBanner = bannerData.discountBanner;
+  const isPending =
+    cateData.isPending ||
+    policyData.isPending ||
+    productData.isPending ||
+    bannerData.isPending ||
+    reviewData.isPending;
 
+  const [category, setCategory] = useState('');
+  const productFilter = productData.productsFilter;
 
-  const fliter = data.filter
-  const banner = data.banner
-  const mainCategories = data.mainCategories
-  const discountBanner = data.discountBanner
-  const lastestReviews = data.lastestReviews
-  const isPending = data.isPending
-  const isRejected = data.isRejected
-  const products = data.products
-  const policies = policy.policyItems
-  
-  console.log(policies)
-  
   useEffect(() => {
-    dispatch(actions.fetchAllProducts())
-    dispatch(actions.fetchAllCategories())
-    dispatch(actions.fetchAllDiscountBanner())
-    dispatch(actions.fetchLasetReviews())
-    dispatch(actions.fetchAllBanner())
-    dispatch(policyAct.fetchAsyncAllPolicy())
-  }, []) 
-  
-  const productFilter = products.filter(product => product.productCategories.nodes.some(category => category.name === fliter))
+    dispatch(productsActs.fetchAllProducts());
+    dispatch(cateActs.fetchAllCategories());
+    dispatch(reviewActs.fetchLasetReviews());
+    dispatch(bannerActs.fetchAllBanner());
+    dispatch(policyActs.fetchAsyncAllPolicy());
+    dispatch(bannerActs.fetchAllDiscountBanner());
+  }, []);
 
+  useEffect(() => {
+    setCategory(cateData.rootCategories[0]?.name);
+    dispatch(
+      productsActs.filterProductByCate(cateData.rootCategories[0]?.name)
+    );
+  }, [cateData.rootCategories, productData.products]);
+
+  const handleFilterProduct = (cate) => {
+    dispatch(productsActs.filterProductByCate(cate.name));
+    setCategory(cate.name);
+  };
+
+  console.log();
+
+  // if(isRejected) return  <div>Something went wrong</div>
   return (
     <>
-      {isPending && !isRejected ? <div>Loading...</div>
-      : <div>
+      {isPending ? (
+        <div>Loading...</div>
+      ) : (
+        <div>
           <CampaignBar
             title="GET 20% SALE WITH COUPONE CODE CGBNJKI25"
             imageUrl="https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2021/06/bg_cam.jpg"
@@ -144,7 +181,7 @@ const Home = () => {
           <section className="lg:!hidden">
             <div>
               <Slider {...settingsSlickTopCate}>
-                {mainCategories.map((category, i) => (
+                {rootCategories.map((category, i) => (
                   <Banner key={i} data={category} />
                 ))}
               </Slider>
@@ -153,12 +190,12 @@ const Home = () => {
           {/* banner */}
           <section className="hidden lg:block">
             <div className="flex items-center">
-              {mainCategories.map((category, i) => (
-                  <Col lg={4} key={i}>
-                    <Link  to={`/shop/${category.slug}`}>
-                      <Banner data={category} />
-                    </Link>
-                  </Col>
+              {rootCategories.map((category, i) => (
+                <Col lg={4} key={i}>
+                  <Link to={`/shop/${category.slug}`} state={{url: category.slug}}>
+                    <Banner data={category} />
+                  </Link>
+                </Col>
               ))}
             </div>
           </section>
@@ -177,7 +214,7 @@ const Home = () => {
             </Container>
           </section>
           {/*end policy */}
-                
+
           <section>
             <Container fluid="xl">
               <div className="p-[15px_0]">
@@ -216,7 +253,10 @@ const Home = () => {
                   if (navi)
                     return (
                       <Col key={i} lg={4} md={6} sm={12} className="mt-[20px]">
-                        <Link to={item.url}>
+                        <Link
+                          to={`/shop/${item.url}`}
+                          state={{ url: item.url }}
+                        >
                           <CategoryBanner style={left} data={item} />
                         </Link>
                       </Col>
@@ -224,7 +264,10 @@ const Home = () => {
                   else
                     return (
                       <Col key={i} lg={8} md={6} sm={12} className="mt-[20px]">
-                        <Link to={item.url}>
+                        <Link
+                          to={`/shop/${item.url}`}
+                          state={{ url: item.url }}
+                        >
                           <CategoryBanner style={right} data={item} />
                         </Link>
                       </Col>
@@ -233,7 +276,7 @@ const Home = () => {
               </Row>
             </Container>
           </section>
-                
+
           {/* Top month seller  */}
 
           <section className="pt-[88px] ">
@@ -248,13 +291,13 @@ const Home = () => {
                   <div>
                     {/* Home category */}
                     <div className="flex justify-center">
-                      {mainCategories.map((item, i) => (
-                        <div key={i} onClick={() => dispatch(actions.setFliterCategories(item.name))}>
+                      {rootCategories.map((item, i) => (
+                        <div key={i} onClick={() => handleFilterProduct(item)}>
                           <p
                             className={`mr-8 capitalize font-medium relative cursor-pointer text-base hover:text-primary 
-                            leadding-1 leading-[18px] afterStyle hover:after:!bg-primary hover:after:w-full hover:after:opacity-100 ${
-                              fliter === item.name ? 'active_one' : ''
-                            }`}
+                              leadding-1 leading-[18px] afterStyle hover:after:!bg-primary hover:after:w-full hover:after:opacity-100 ${
+                                category === item.name ? 'active_one' : ''
+                              }`}
                           >
                             {item.name}
                           </p>
@@ -264,19 +307,24 @@ const Home = () => {
                   </div>
                 </Col>
               </Row>
-              
+
               {/* product */}
 
-              <Row >
-                  {productFilter.map(item => (
-                    <Col lg={3} md={4} className="mb-[20px]" key={item.id}>
-                      <CardProduct data={item} />
-                    </Col>
-                  ))}
+              <Row>
+                {productFilter.map((item) => (
+                  <Col lg={3} md={4} className="mb-[20px]" key={item.id}>
+                    <CardProduct data={item} />
+                  </Col>
+                ))}
               </Row>
 
-              <div className='p-[40px_0_80px]'>
-                <Link className='relative origin-[left_center] hover:after:origin-[right_center] hover:after:scale-0 after:transition text-base font-medium afterStyle after:opacity-100 after:w-full after:block after:bg-black' to={'/shop'}>Discover More</Link>
+              <div className="p-[40px_0_80px]">
+                <Link
+                  className="relative origin-[left_center] hover:after:origin-[right_center] hover:after:scale-0 after:transition text-base font-medium afterStyle after:opacity-100 after:w-full after:block after:bg-black"
+                  to={'/shop'}
+                >
+                  Discover More
+                </Link>
               </div>
             </Container>
           </section>
@@ -286,7 +334,7 @@ const Home = () => {
           <section>
             <Slider {...settingsdiscountBanner}>
               {discountBanner.map((item) => (
-                <Discount key={item.id} data={item}/>
+                <Discount key={item.id} data={item} />
               ))}
             </Slider>
           </section>
@@ -296,22 +344,25 @@ const Home = () => {
             <Container fluid="xl">
               <Row>
                 <Col lg={12}>
-                  <div className='p-[105px_0px_70px]'>
-                    <p className='upercase text-sm font-medium text-[#a0a0a0] mb-[15px]'>WHAT BUYERS SAY</p>
-                    <h1 className="text-4xl font-medium leading-[1]">Lastest Buyers Review</h1>
+                  <div className="p-[105px_0px_70px]">
+                    <p className="upercase text-sm font-medium text-[#a0a0a0] mb-[15px]">
+                      WHAT BUYERS SAY
+                    </p>
+                    <h1 className="text-4xl font-medium leading-[1]">
+                      Lastest Buyers Review
+                    </h1>
                   </div>
                 </Col>
                 <Col lg={12}>
                   <div className="mr-[-30px]">
                     <Slider {...settingsReview}>
-                    {lastestReviews.map((review) => (
+                      {lastestReviews.map((review) => (
                         <Review key={review.id} data={review}></Review>
                       ))}
                     </Slider>
                   </div>
                 </Col>
               </Row>
-
             </Container>
           </section>
 
@@ -319,21 +370,33 @@ const Home = () => {
             <Container fluid="xl">
               <Row>
                 <Col lg={12}>
-                    <div className="p-[15px] pb-[64px] ">
-                      <h2 className="mb-[21px] text-4xl font-medium text-[#111111]">@Razzi</h2>
-                      <p className="text-lg font-normal text-[#525252]">The best thing about a monochrome colour scheme</p>
-                    </div>
+                  <div className="p-[15px] pb-[64px] ">
+                    <h2 className="mb-[21px] text-4xl font-medium text-[#111111]">
+                      @Razzi
+                    </h2>
+                    <p className="text-lg font-normal text-[#525252]">
+                      The best thing about a monochrome colour scheme
+                    </p>
+                  </div>
                 </Col>
                 <Col lg={12}>
-                    <Row className='mb-[-105px] pr-[7px] pl-[7px]'>
-                      {razziInstagram.map((item, i) => (
-                        <Col key={i} lg={2} md={4} className="mt-[12px] pr-[5px] pl-[5px]" >
-                          <a href={item.link} className="hover:opacity-90 transition" >
-                            <Razzi data={item}/>
-                          </a>
-                        </Col>
-                      ))}
-                    </Row>
+                  <Row className="mb-[-105px] pr-[7px] pl-[7px]">
+                    {razziInstagram.map((item, i) => (
+                      <Col
+                        key={i}
+                        lg={2}
+                        md={4}
+                        className="mt-[12px] pr-[5px] pl-[5px]"
+                      >
+                        <a
+                          href={item.link}
+                          className="hover:opacity-90 transition"
+                        >
+                          <Razzi data={item} />
+                        </a>
+                      </Col>
+                    ))}
+                  </Row>
                 </Col>
               </Row>
             </Container>
@@ -343,24 +406,24 @@ const Home = () => {
             <Container fluid="xl">
               <div className="p-[190px_0_68px]">
                 <Row className="hidden lg:flex">
-                    {brands.map((item, i) => (
-                      <Col key={i} >
-                        <Link  to={`/${item.slug}`}>
-                          <Brand  data={item}/>
-                        </Link>
-                      </Col>
-                    ))} 
+                  {brands.map((item, i) => (
+                    <Col key={i}>
+                      <Link to={`/${item.slug}`}>
+                        <Brand data={item} />
+                      </Link>
+                    </Col>
+                  ))}
                 </Row>
                 <Row className="lg:hidden">
                   <Col lg={12}>
                     <Slider {...settingsBrand}>
                       {brands.map((item, i) => (
-                          <div key={i}>
-                            <Link to={`/${item.slug}`}>
-                              <Brand  data={item}/>
-                            </Link>
-                          </div>
-                        ))} 
+                        <div key={i}>
+                          <Link to={`/${item.slug}`}>
+                            <Brand data={item} />
+                          </Link>
+                        </div>
+                      ))}
                     </Slider>
                   </Col>
                 </Row>
@@ -368,9 +431,7 @@ const Home = () => {
             </Container>
           </section>
         </div>
-      }
-
-      {isRejected && !isPending && <div>Something went wrong</div>}
+      )}
     </>
   );
 };

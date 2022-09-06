@@ -3,11 +3,10 @@ import Footer from '../Common/Footer/Footer';
 import Header from '../Common/Header/Header';
 import Topbar from '../Common/Topbar/Topbar';
 import { OffLayer, ConfirmBox, CartLayer } from '../index';
-import { useCartSlice } from '../../Features/hooks';
-import { useDataSlice } from '../../Features/hooks';
+import { useCartSlice, useProductsSlice } from '../../Features/hooks';
 
 const DefaultLayout = ({ children }) => {
-  const [data, actions, dispatch] = useDataSlice();
+  const [productsData, actions, dispatch] = useProductsSlice();
 
   const [cartData, cartActions] = useCartSlice();
   return (
@@ -17,7 +16,7 @@ const DefaultLayout = ({ children }) => {
           <CartLayer
             data={cartData}
             toggleLayer={cartActions.toggleLayer}
-            products={data.products}
+            products={productsData.products}
             onDispatch={dispatch}
           />
         </OffLayer>

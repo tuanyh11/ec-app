@@ -1,14 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import {dataSlice, cartSlice, policySlice} from '../slice'
+import {reviewsSilce, cartSlice, policySlice, productsSlice, bannerSlice, attributesSlice, categoriesSlice} from '../slice'
 import {
-  persistStore,
   persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
 } from 'redux-persist'
 
 import storage from 'redux-persist/lib/storage'
@@ -24,8 +17,12 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = configureStore({
     reducer: {
-        data: dataSlice,
+        attributes: attributesSlice,
+        banner: bannerSlice,
+        products: productsSlice,
+        reviews: reviewsSilce,
         policy: policySlice,
+        categories: categoriesSlice,
         persistedData: persistedReducer
     },
     middleware: (getDefaultMiddleware) =>

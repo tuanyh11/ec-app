@@ -3,24 +3,21 @@ import Dropdown from '../Dropdown/Dropdown';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import SidebarCate from './SidebarCate';
 import SidebarAtrb from './SidebarAtrb';
-import { useParams} from 'react-router-dom'
+import { useParams, useLocation} from 'react-router-dom'
 import { InputSearch } from '../..';
-import {useDataSlice} from '../../../Features/hooks'
+import {useAttributesSlice, useCategoriesSlice} from '../../../Features/hooks'
 
 
 const Sidebar = ({ categories, setSelected, attributes, selected }) => {
-  const rootCategory = categories.filter((item) => item.parentId === null);
-
-  // const attributesData = attributes.map((item) => item)
-
-  const [data, actions] = useDataSlice()
+  const [cateData] = useCategoriesSlice()
 
   const [toggleCate, setToggleCate] = useState({
     toggleRoot: true,
-    toggleChildren: [],
+    toggleChildren: [...selected?.categories],
   }); 
 
-  const {id} = useParams()
+  const rootCategory = cateData.rootCategories
+
 
   const [toggleAttributes, setToggleAttributes] = useState([])
 
@@ -90,18 +87,16 @@ const Sidebar = ({ categories, setSelected, attributes, selected }) => {
     }
   }
 
-  useEffect(() => {
-    setToggleAttributes([...toggleAttributes, ...data.attributes.map(att => att?.name)])
-  }, [data.attributes])
+  // useEffect(() => {
+  //   setToggleAttributes([...toggleAttributes, ...attData.attributes.map(att => att?.name)])
+  // }, [attData.attributes])
 
   const handleToggleAttribute = (value) => {
     const temp = toggleAttributes.includes(value) ? toggleAttributes.filter(item => item !== value) : [...toggleAttributes, value]
     setToggleAttributes(temp)
   }
 
-  useEffect(() => {
-    if(id) setToggleCate({...toggleCate, toggleChildren: [...toggleCate.toggleChildren.filter((item) => item === id), id]})
-  }, [id])
+
 
   const propsCateDropdown = {
     title: 'Categories',

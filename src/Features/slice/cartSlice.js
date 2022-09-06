@@ -35,7 +35,12 @@ const cartSice = createSlice({
         addToCart(state, action) {
             const exitingProduct = state.cartItems.find(item => item.id === action.payload.id)
             if(exitingProduct) 
-                state.cartItems.push( {...exitingProduct, quantity: Number(exitingProduct.quantity) + action.payload.quantity})
+                state.cartItems = state.cartItems.map(item => {
+                    if(item.id === exitingProduct.id) {
+                        return  {...exitingProduct, quantity: Number(exitingProduct.quantity) + action.payload.quantity}
+                    }
+                    return item
+                })
             else state.cartItems.push(action.payload)
             state.newItem = action.payload
             getTotalAmount(state, action)

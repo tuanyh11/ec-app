@@ -1,6 +1,6 @@
 import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { publicRoutes } from './router';
+import { PublicRoutes } from './router';
 import { DefaultLayout } from './components';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Navigate to={'/home'} />} />
-        {publicRoutes.map((route, i) => {
+        {PublicRoutes().map((route, i) => {
           const { component: Component, layout, path } = route;
           const Layout = layout === null ? DefaultLayout : layout;
           return (
@@ -17,10 +17,11 @@ function App() {
               path={path}
               element={
                 <Layout>
-                  <Component />
+                  <Component/>
                 </Layout>
               }
-            />
+            >
+            </Route>
           );
         })}
       </Routes>

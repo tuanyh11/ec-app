@@ -41,36 +41,35 @@ const Discount = ({data}) => {
 
   }
 
-
   return (
     <div>
-        <div style={{backgroundImage: `url(${data.image.mediaItemUrl})`}} className="h-[550px] bg-cover bg-no-repeat">
-            <div className="h-full  flex-col justify-center ml-[950px] flex text-start p-[15px]  ">
-                <h1 className="font-medium text-[32px] leading-[46px] text-[#1f1f1f] mb-[30px]" dangerouslySetInnerHTML={{__html: data.title}}></h1>
-                <div className='flex mb-[52px]'> 
+        <div style={{backgroundImage: `url(${data.image.mediaItemUrl})`}} className="h-[550px] bg-cover bg-no-repeat bg-center ">
+            <div className="h-full  flex-col justify-center  lg:ml-[50%] flex text-center lg:!text-start p-[15px]  ">
+                <h1 className="font-medium text-[32px]   leading-[46px] text-[#1f1f1f] mb-[30px]" dangerouslySetInnerHTML={{__html: data.headline}}></h1>
+                <div className='flex mb-[52px] justify-center lg:!justify-start'> 
                     <div className="flex font-semibold !text-primary">
-                        <div className="text-[40px] pr-[23px]">
+                        <div className="text-[40px] pr-[15px] lg:pr-[23px]">
                           <span>{remainingTime.days}</span>
                           <p className="uppercase text-[13px] text-[#767676] font-medium">days</p>
                         </div>
                     </div>
                     <div className="flex font-semibold !text-primary">
                         <div className="text-[40px] mt-[-2px]">:</div>
-                        <div className="text-[40px] p-[0_23px]">
+                        <div className="text-[40px] p-[0_15px] lg:p-[0_23px]">
                           <span>{remainingTime.hours}</span>
                           <p className="uppercase text-[13px] text-[#767676] font-medium">hours</p>
                         </div>
                     </div>
                     <div className="flex font-semibold !text-primary">
                         <div className="text-[40px] mt-[-2px]">:</div>
-                        <div className="text-[40px] p-[0_23px]">
+                        <div className="text-[40px] p-[0_15px] lg:p-[0_23px]">
                           <span>{remainingTime.minutes}</span>
                           <p className="uppercase text-[13px] text-[#767676] font-medium">minutes</p>
                         </div>
                     </div>
                     <div className="flex font-semibold !text-primary">
                         <div className="text-[40px] mt-[-2px]">:</div>
-                        <div className="text-[40px] p-[0_23px]">
+                        <div className="text-[40px] p-[0_15px] lg:p-[0_23px]">
                           <span>{remainingTime.seconds}</span>
                           <p className="uppercase text-[13px] text-[#767676] font-medium">seconds</p>
                         </div>

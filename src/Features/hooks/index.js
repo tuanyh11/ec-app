@@ -1,13 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  fetchAllProducts,
-  fetchAllCategories,
-  fetchAllDiscountBanner,
-  fetchAllBanner,
-  fetchLasetReviews,
-  setFliterCategories,
-  fetchAllAttributes
-} from '../slice/dataSilce';
+import { fetchLasetReviews } from '../slice/reviewsSilce';
+import { fetchAllAttributes } from '../slice/attributesSlice';
+import { fetchAllCategories } from '../slice/categoriesSlice';
+import { fetchAllProducts, filterProductByCate } from '../slice/productsSlice';
+import { fetchAllBanner, fetchAllDiscountBanner } from '../slice/bannerSlice';
 import {
   toggleLayer,
   addToCart,
@@ -20,20 +16,13 @@ import {
   fetchAsyncAllPolicy
 } from '../slice/policySlice'
 
-export const useDataSlice = () => {
+export const useReviewSlice = () => {
   const dispatch = useDispatch();
   const actions = {
-    fetchAllProducts,
-    fetchAllCategories,
-    fetchAllDiscountBanner,
-    fetchAllBanner,
     fetchLasetReviews,
-    setFliterCategories,
-    fetchAllAttributes,
-    addToCart,
   };
-  const homedata = useSelector((state) => state);
-  return [ homedata.data, actions,dispatch];
+  const reviewData = useSelector((state) => state);
+  return [ reviewData.reviews, actions,dispatch];
 };
 
 export const useCartSlice = () => {
@@ -49,7 +38,50 @@ export const useCartSlice = () => {
   return [cartData, actions, dispatch];
 }
 
-export const usePolicy = () => {
+export const useAttributesSlice  = () => {
+  const dispatch = useDispatch()
+  const actions = {
+    fetchAllAttributes
+  }
+
+  const attributes = useSelector(state => state.attributes)
+  return [attributes, actions, dispatch]
+}
+
+export const useBannerSlice  = () => {
+  const dispatch = useDispatch()
+  const actions = {
+    fetchAllBanner,
+    fetchAllDiscountBanner
+  }
+
+  const banner = useSelector(state => state.banner)
+  return [banner, actions, dispatch]
+}
+
+export const useCategoriesSlice  = () => {
+  const dispatch = useDispatch()
+  const actions = {
+    fetchAllCategories
+  }
+
+  const categories = useSelector(state => state.categories)
+  return [categories, actions, dispatch]
+}
+
+
+export const useProductsSlice  = () => {
+  const dispatch = useDispatch()
+  const actions = {
+    fetchAllProducts,
+    filterProductByCate
+  }
+
+  const products = useSelector(state => state.products)
+  return [products, actions, dispatch]
+}
+
+export const usePolicySlice  = () => {
   const dispatch = useDispatch()
   const actions = {
     fetchAsyncAllPolicy
@@ -58,3 +90,4 @@ export const usePolicy = () => {
   const policy = useSelector(state => state.policy)
   return [policy, actions, dispatch]
 }
+
