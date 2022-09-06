@@ -2,8 +2,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchLasetReviews } from '../slice/reviewsSilce';
 import { fetchAllAttributes } from '../slice/attributesSlice';
 import { fetchAllCategories } from '../slice/categoriesSlice';
-import { fetchAllProducts, filterProductByCate } from '../slice/productsSlice';
+import { fetchAllProducts, filterProductByCate, filterProduct } from '../slice/productsSlice';
 import { fetchAllBanner, fetchAllDiscountBanner } from '../slice/bannerSlice';
+import { fetchAsyncAllPages} from '../slice/headerSlice';
 import {
   toggleLayer,
   addToCart,
@@ -74,7 +75,8 @@ export const useProductsSlice  = () => {
   const dispatch = useDispatch()
   const actions = {
     fetchAllProducts,
-    filterProductByCate
+    filterProductByCate,
+    filterProduct
   }
 
   const products = useSelector(state => state.products)
@@ -90,4 +92,15 @@ export const usePolicySlice  = () => {
   const policy = useSelector(state => state.policy)
   return [policy, actions, dispatch]
 }
+
+export const useHeaderSlice  = () => {
+  const dispatch = useDispatch()
+  const actions = {
+    fetchAsyncAllPages
+  }
+
+  const headers = useSelector(state => state.headers)
+  return [headers, actions, dispatch]
+}
+
 

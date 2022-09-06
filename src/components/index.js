@@ -22,6 +22,7 @@ export {default as CartLayer } from './UI/CartLayer/CartLayer'
 export {default as Button } from './UI/Button'
 export {default as ConfirmBox } from './UI/ConfirmBox'
 export {default as Layer } from './UI/Layer'
+export {default as Loading } from './UI/Loading'
 
 
 export {default as CampaignBar } from './Common/CampaignBar/CampaignBar'

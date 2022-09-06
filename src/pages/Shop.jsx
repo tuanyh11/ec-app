@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sidebar } from '../components/';
+import { Loading, Sidebar } from '../components/';
 import { Container, Row, Col } from 'reactstrap';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { RiArrowDownSLine } from 'react-icons/ri';
@@ -10,11 +10,6 @@ import {
   useAttributesSlice,
 } from '../Features/hooks';
 import currency from 'currency.js';
-
-const categoriesBanner = {
-  imgUrl:
-    'https://demo4.drfuri.com/razzi/wp-content/uploads/sites/14/2020/12/catalog_banner1.jpg',
-};
 
 const sortValue = [
   {
@@ -30,7 +25,7 @@ const sortValue = [
     isDefault: false,
   },
   {
-    name: 'Sort by latest',
+    name: 'Sort by lastest',
     isDefault: false,
   },
 ];
@@ -67,7 +62,7 @@ const Shop = () => {
   }, []);
 
   const categories = cateData.categories;
-  const products = productData.products;
+  const products = productData.productsFilter;
   const attributes = attData.attributes;
 
   const updateProducts = () => {
@@ -148,11 +143,12 @@ const Shop = () => {
   //     });
   // }, [id]);
 
+
   if (error) return <div>{error}</div>;
   return (
     <div className="lg:p-[60px_80px] p-[60px_0_80px]">
       {isPending ? (
-        <div>Loading...</div>
+        <div className="flex justify-center"><Loading/></div>
       ) : (
         <Container fluid="xl">
           <Row>
@@ -188,6 +184,7 @@ const Shop = () => {
                     <select
                       name=""
                       id=""
+                      onChange={(e) => dispatch(productActs.filterProduct(e.target.value))}
                       className="p-[12px_46px] text-lg border text-[#767676] outline-none  cursor-pointer appearance-none"
                     >
                       {sortValue.map((value, i) => {
@@ -196,6 +193,7 @@ const Shop = () => {
                             value={value.name}
                             key={i}
                             defaultValue={value.isDefault}
+                            
                           >
                             {value.name}
                           </option>

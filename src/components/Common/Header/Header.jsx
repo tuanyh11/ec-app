@@ -3,7 +3,7 @@ import { Container } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import API from '../../../api'
 import {GET_ALLPAGES} from '../../../Queries'
-import {useCartSlice} from '../../../Features/hooks'
+import {useCartSlice, useHeaderSlice} from '../../../Features/hooks'
 import {
   OffLayer,
   Pannel,
@@ -593,26 +593,10 @@ function Header() {
   
   const [selectPanel, setSelectPanel] = useState('');
   const [isTurnOn, setIsTurnOn] = useState(false);
-  const [pages, setPages] = useState([])
+
+  const [headerData, headerActs, dispatch] = useHeaderSlice()
 
   const [cartData] = useCartSlice()
-
-  useEffect(() => {
-
-      (
-        async() => {
-            try {
-                const res = await API.post('https://72.arrowhitech.net/tn3/test_an/wordpress/graphql', {
-                  query: GET_ALLPAGES
-                })
-                setPages([...res.data.data.allPages.pages])
-              } catch (error) {
-                window.confirm(error)
-              }
-          }
-        )()
-    
-  }, [])
 
   const handleSelectPanel = (title) => {
     setIsTurnOn(true);
@@ -684,7 +668,7 @@ function Header() {
               Razzi.
             </Link>
           </div>
-          <Nav data={pages} />
+          <Nav data={headerData.pages} />
 
           {/* header actions */}
           <div>

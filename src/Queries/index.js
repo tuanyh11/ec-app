@@ -44,6 +44,7 @@ query GetAllProducts {
       ... on SimpleProduct {
         id
         name
+        date
         attributes {
           nodes {
             options
@@ -72,6 +73,7 @@ query GetAllProducts {
       ... on VariableProduct {
         id
         name
+        date
         attributes {
           nodes {
             options

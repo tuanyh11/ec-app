@@ -14,6 +14,7 @@ import {
   Review,
   Razzi,
   Brand,
+  Loading
 } from '../components/';
 import {
   useCategoriesSlice,
@@ -165,13 +166,11 @@ const Home = () => {
     setCategory(cate.name);
   };
 
-  console.log();
-
   // if(isRejected) return  <div>Something went wrong</div>
   return (
     <>
       {isPending ? (
-        <div>Loading...</div>
+        <div className="flex justify-center"><Loading/></div>
       ) : (
         <div>
           <CampaignBar

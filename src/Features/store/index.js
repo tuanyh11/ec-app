@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import {reviewsSilce, cartSlice, policySlice, productsSlice, bannerSlice, attributesSlice, categoriesSlice} from '../slice'
+import {reviewsSilce, cartSlice, policySlice, productsSlice, bannerSlice, attributesSlice, categoriesSlice, headerSlice} from '../slice'
 import {
   persistReducer,
 } from 'redux-persist'
@@ -23,7 +23,8 @@ const store = configureStore({
         reviews: reviewsSilce,
         policy: policySlice,
         categories: categoriesSlice,
-        persistedData: persistedReducer
+        persistedData: persistedReducer,
+        headers: headerSlice
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

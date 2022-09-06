@@ -34,6 +34,15 @@ const productsSlice = createSlice({
   reducers: {
     filterProductByCate(state, action) {
         state.productsFilter = state.products.filter(product => product.productCategories.nodes.some(category => category.name === action.payload))
+    },
+    filterProduct(state, action) {
+
+        if(action.payload.toUpperCase() === 'DEFAULT SORTING') {
+          state.productsFilter = state.products
+        }
+        if(action.payload.toUpperCase() === 'SORT BY LASTEST') {
+            state.productsFilter = state.productsFilter.sort((a, b) => new Date(a.date) - new Date(b.date))
+        }
     }
   },
   extraReducers: {
@@ -50,10 +59,11 @@ const productsSlice = createSlice({
       state.isPending = false;
       state.products = actions.payload;
       state.success = true;
+      state.productsFilter = actions.payload
     },
   },
 });
 
 
-export const {filterProductByCate} = productsSlice.actions
+export const {filterProductByCate, filterProduct} = productsSlice.actions
 export default productsSlice.reducer;
