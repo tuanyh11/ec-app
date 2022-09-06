@@ -120,7 +120,7 @@ const Home = () => {
   const products = data.products
   const policies = policy.policyItems
   
-  
+  console.log(policies)
   
   useEffect(() => {
     dispatch(actions.fetchAllProducts())
@@ -177,7 +177,7 @@ const Home = () => {
             </Container>
           </section>
           {/*end policy */}
-
+                
           <section>
             <Container fluid="xl">
               <div className="p-[15px_0]">

@@ -17,15 +17,27 @@ export const fetchAsyncAllPolicy = createAsyncThunk('fetchAsyncAllPolicy', async
 const initialState = {
     policyItems: [],
     isPending: false,
-    isRejected: false
+    isRejected: false,
+    error: null,
 }
 
 const policySilce = createSlice({
     name: 'policy',
     initialState,
     extraReducers: {
-        [fetchAsyncAllPolicy.pending]: {
-            
+        [fetchAsyncAllPolicy.pending]:(state, action) => {
+            state.isPending = true
+        },
+
+        [fetchAsyncAllPolicy.rejected]:(state, action) => {
+            state.isPending = false
+            state.isRejected = true
+            state.error = action.payload
+         },
+        
+        [fetchAsyncAllPolicy.fulfilled]:(state, action) => {
+            state.isPending = false
+            state.policyItems = action.payload
         }
     }
 })
