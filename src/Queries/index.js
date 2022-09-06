@@ -86,6 +86,7 @@ query GetAllProducts {
         productCategories {
           nodes {
             name
+            slug
           }
         }
         price
@@ -157,3 +158,15 @@ export const GET_LASTREVIEWS = `
 }
 `
 
+export const GET_ALLPOLICY = `query GetAllPolicy {
+  allPolicy {
+    nodes {
+      policy {
+        description
+        fieldGroupName
+        heading
+        icon
+      }
+    }
+  }
+}`

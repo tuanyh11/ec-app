@@ -12,7 +12,7 @@ export const fetchAllAttributes = createAsyncThunk('attributies/fetchAllAttribut
     }))
     return attributes.reverse()
     } catch (error) {
-        rejectWithValue(error?.response?.data)
+       return rejectWithValue(error?.response?.data)
     }
 })
 
@@ -24,7 +24,7 @@ export const fetchAllProducts = createAsyncThunk('products/fetchAllProducts', as
         const products = productRes.data.data.products.nodes
         return products
     } catch (error) {
-        rejectWithValue(error?.response?.data)
+       return rejectWithValue(error?.response?.data)
     }
 })
 
@@ -38,7 +38,7 @@ export const fetchAllCategories = createAsyncThunk('categories/fetchAllCategorie
       const categories = categoriesRes.data?.data?.productCategories?.nodes.reverse()
       return categories
   } catch (error) {
-      rejectWithValue(error?.response?.data);
+     return rejectWithValue(error?.response?.data);
   }
 })
 
@@ -54,7 +54,7 @@ export const fetchAllDiscountBanner= createAsyncThunk('discountbanner/fetchAllDi
 
     return discountBanner
   } catch (error) {
-      rejectWithValue(error?.response?.data);
+     return rejectWithValue(error?.response?.data);
   }
 })
 
@@ -70,7 +70,7 @@ export const fetchAllBanner = createAsyncThunk('banner/fetchAllBanner', async (d
 
     return banners
   } catch (error) {
-      rejectWithValue(error?.response?.data);
+     return rejectWithValue(error?.response?.data);
   }
 })
 
@@ -104,7 +104,7 @@ export const fetchLasetReviews = createAsyncThunk('review/fetchLasetReviews', as
     return test.sort((a, b) => new Date(b.date_created) - new Date(a.date_created))
 
   } catch (error) {
-      rejectWithValue(error?.response?.data);
+     return rejectWithValue(error?.response?.data);
   }
 })
 

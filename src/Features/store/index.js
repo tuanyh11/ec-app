@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import {dataSlice, cartSlice} from '../slice'
+import {dataSlice, cartSlice, policySlice} from '../slice'
 import {
   persistStore,
   persistReducer,
@@ -25,6 +25,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 const store = configureStore({
     reducer: {
         data: dataSlice,
+        policy: policySlice,
         persistedData: persistedReducer
     },
     middleware: (getDefaultMiddleware) =>

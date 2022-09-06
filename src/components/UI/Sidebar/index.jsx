@@ -28,8 +28,6 @@ const Sidebar = ({ categories, setSelected, attributes, selected }) => {
     return categories.filter((item) => item.parentId === id);
   };
 
-  console.log(selected.categories)
-
   const handleToggleCate = (slug, type) => {
     const toggleItem = toggleCate.toggleChildren.includes(slug)
       ? toggleCate.toggleChildren.filter((item) => item !== slug)
@@ -118,7 +116,7 @@ const Sidebar = ({ categories, setSelected, attributes, selected }) => {
       <SidebarCate
         key={index}
         handleCheckbox={(checked, value) => handleCheckbox( type, checked, value)}
-        toggle={toggleCate.toggleChildren.includes(item.name)}
+        toggle={toggleCate.toggleChildren.includes(item.slug)}
         item={item}
         childrens={getChilCategory(item.id)}
         onToggle={handleToggleCate}

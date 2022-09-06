@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk,current } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../api";
 import currency from 'currency.js'
 
@@ -8,7 +8,7 @@ const addASyncToCart = createAsyncThunk('addASyncToCart', async (data, {rejectWi
 
         })
     } catch (error) {
-        rejectWithValue(error.data.message)
+       return rejectWithValue(error.data.message)
     }
 })
 

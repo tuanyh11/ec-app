@@ -56,7 +56,6 @@ const Shop = () => {
   const isRejected = data.isRejected
   const error = data.isRejected
 
-  
   useEffect(() => {
     dispatch(actions.fetchAllAttributes())
     dispatch(actions.fetchAllCategories())
@@ -71,7 +70,7 @@ const Shop = () => {
   const updateProducts = () => {
     let temp = products
     if(selected.categories.length > 0) {
-      temp = temp.filter((product) => product.productCategories.nodes.some(item => selected.categories.includes(item.name)))
+      temp = temp.filter((product) => product.productCategories.nodes.some(item => selected.categories.includes(item.slug)))
     }
 
     if(selected.size.length > 0) {

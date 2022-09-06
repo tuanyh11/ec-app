@@ -16,6 +16,10 @@ import {
   handleQuantity
 } from '../slice/cartSlice'
 
+import {
+  fetchAsyncAllPolicy
+} from '../slice/policySlice'
+
 export const useDataSlice = () => {
   const dispatch = useDispatch();
   const actions = {
@@ -43,4 +47,14 @@ export const useCartSlice = () => {
   };
   const cartData = useSelector((state) => state.persistedData.cart);
   return [cartData, actions, dispatch];
+}
+
+export const usePolicy = () => {
+  const dispatch = useDispatch()
+  const actions = {
+    fetchAsyncAllPolicy
+  }
+
+  const policy = useSelector(state => state.policy)
+  return [policy, actions, dispatch]
 }

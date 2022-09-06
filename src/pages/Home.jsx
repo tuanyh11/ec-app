@@ -7,33 +7,11 @@ import Slider from 'react-slick';
 import { Col, Container, Row } from 'reactstrap';
 import { razziInstagram, brands } from '../acssets/fakedata';
 import { Banner, CampaignBar, CardProduct, CategoryBanner, Discount, Policy, Review, Razzi, Brand } from '../components/';
-import { useDataSlice } from '../Features/hooks';
+import { useDataSlice, usePolicy } from '../Features/hooks';
 
 // ck_f02c4b788ca1e801c2dedde08c03bd99f8dc3967
 // cs_bf7f0d0b38e00780c620cfe476be1afb63cdb300
 
-const policy = [
-  {
-    icon: <RiTruckLine className="w-[40px] h-[40px]" />,
-    name: 'FREE SHIPPING',
-    content: 'From all orders over $100',
-  },
-  {
-    icon: <RiExchangeDollarFill className="w-[40px] h-[40px]" />,
-    name: 'FREE RETURNS',
-    content: 'Return money within 30 days',
-  },
-  {
-    icon: <RiSecurePaymentLine className="w-[40px] h-[40px]" />,
-    name: 'SECURE SHOPPING',
-    content: "You're in safe hands",
-  },
-  {
-    icon: <RiMedalLine className="w-[40px] h-[40px]" />,
-    name: 'FREE SHIPPING',
-    content: 'We have everything you need',
-  },
-];
 
 
 const settingsSlickTopCate = {
@@ -129,6 +107,7 @@ function SamplePrevArrow(props) {
 const Home = () => {
 
   const [ data, actions, dispatch] = useDataSlice()
+  const [policy, policyAct] = usePolicy()
 
 
   const fliter = data.filter
@@ -139,7 +118,7 @@ const Home = () => {
   const isPending = data.isPending
   const isRejected = data.isRejected
   const products = data.products
-  
+  const policies = policy.policyItems
   
   
   
@@ -149,6 +128,7 @@ const Home = () => {
     dispatch(actions.fetchAllDiscountBanner())
     dispatch(actions.fetchLasetReviews())
     dispatch(actions.fetchAllBanner())
+    dispatch(policyAct.fetchAsyncAllPolicy())
   }, []) 
   
   const productFilter = products.filter(product => product.productCategories.nodes.some(category => category.name === fliter))
@@ -188,7 +168,7 @@ const Home = () => {
           <section className="pt-[20px] ">
             <Container fluid="xl">
               <Row>
-                {policy.map((item, i) => (
+                {policies.map((item, i) => (
                   <Col sm={6} lg={3} className="p-[15px]" key={i}>
                     <Policy data={item} />
                   </Col>

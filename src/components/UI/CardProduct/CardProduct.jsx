@@ -32,7 +32,7 @@ const CardProduct = ({data, tunOffAction}) => {
         {!tunOffAction && (
           <>
             <div className={`hidden lg:flex items-center absolute bottom-[15px] translate-x-[50%] right-[50%]`}>
-                <button datatype={`${attributes ? 'Slect options': 'Add to cart'}`}  onClick={() => attributes ? nav(`/shop/${data.id}`) : handleAddtoCart(data)} className='relative action-ntn  w-[40px] group-hover:translate-y-[-10px] h-[40px]  [transition:transform_.1s,opacity_.1s,background_.35s,color_.35s] opacity-0 group-hover:!opacity-100 hover:text-white hover:!bg-primary cursor-pointer flex items-center justify-center m-[0_5px] rounded-[100%] bg-white'>
+                <button datatype={`${attributes ? 'Slect options': 'Add to cart'}`}  onClick={() => attributes ? nav(`/shop/product/${data.id}`) : handleAddtoCart(data)} className='relative action-ntn  w-[40px] group-hover:translate-y-[-10px] h-[40px]  [transition:transform_.1s,opacity_.1s,background_.35s,color_.35s] opacity-0 group-hover:!opacity-100 hover:text-white hover:!bg-primary cursor-pointer flex items-center justify-center m-[0_5px] rounded-[100%] bg-white'>
                   <RiHandbagLine className='w-[18px] h-[18px]'/>
                 </button>
                 <button datatype='Quick view' className='relative action-ntn  w-[40px] group-hover:translate-y-[-10px] h-[40px] [transition:transform_.1s,opacity_.1s,background_.35s,color_.35s] opacity-0 group-hover:!opacity-100 hover:text-white hover:!bg-primary cursor-pointer flex items-center justify-center m-[0_5px] rounded-[100%] bg-white'>

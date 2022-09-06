@@ -29,13 +29,13 @@ const SidebarItem = ({
         } flex justify-between`}
       >
         <div className="flex items-center checkbox-container">
-          <input type="checkbox"  onChange={(e) => handleCheckbox(e.target.checked, item.name)} checked={defaultChecked.includes(item.name)} className=" mr-3 cursor-pointer w-20 h-8 absolute bg-transparent opacity-0" id={item.id}/>
+          <input type="checkbox"  onChange={(e) => handleCheckbox(e.target.checked, item.slug)} checked={defaultChecked.includes(item.slug)} className=" mr-3 cursor-pointer w-20 h-8 absolute bg-transparent opacity-0" id={item.id}/>
           <span className=" before:w-5 before:content-['']  before:h-5  before:border  before:block before:bg-[#e2e2e2] mr-3 cursor-pointer"></span>
-          <label htmlFor={item.id} className="text-lg text-[#767676] cursor-pointer before:content-['']">{item.name}</label>
+          <label htmlFor={item.id} className="text-lg text-[#767676] cursor-pointer before:content-['']">{item.slug}</label>
           <p className="ml-1 font-normal text-sm text-[#767676]">{`(${item.products.nodes.length})`}</p>
         </div>
         {type === 'root' && (
-          <div onClick={() => onToggle(item.name)} className="p-2 cursor-pointer">
+          <div onClick={() => onToggle(item.slug)} className="p-2 cursor-pointer">
             <RiArrowDownSLine
               className={`${
                 toggle ? 'rotate-[360deg]' : 'rotate-[180deg] '
@@ -52,7 +52,7 @@ const SidebarItem = ({
         {childrens &&
           childrens.map((item, index) => (
             <div key={item.id} className="mt-[10px]">
-              <SidebarItem item={item} type="children"  handleCheckbox={handleCheckbox} />
+              <SidebarItem item={item} type="children" defaultChecked={defaultChecked}  handleCheckbox={handleCheckbox} />
             </div>
           ))}
       </div>
