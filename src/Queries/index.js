@@ -24,6 +24,7 @@ export const GET_ALLCATEGORIES = `{
       name
       parentId
       description
+      slug
       image {
         mediaItemUrl
       }
@@ -63,6 +64,7 @@ query GetAllProducts {
         productCategories {
           nodes {
             name
+            slug
           }
         }
         price

@@ -29,8 +29,6 @@ const CartItem = ({data}) => {
     
   }
 
-
-  console.log(cartData)
   return (
     <div className="flex items-center pb-[30px] border-b-[1px] mb-[30px]">
       <Link to="/" className="pr-[30px]">

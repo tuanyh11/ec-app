@@ -175,7 +175,7 @@ const Home = () => {
             <div className="flex items-center">
               {mainCategories.map((category, i) => (
                   <Col lg={4} key={i}>
-                    <Link  to={`/shop/${category.name}`}>
+                    <Link  to={`/shop/${category.slug}`}>
                       <Banner data={category} />
                     </Link>
                   </Col>

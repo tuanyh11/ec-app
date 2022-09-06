@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react'
 import {Sidebar} from '../components/'
 import { Container, Row, Col} from 'reactstrap'
-import {Link, useLocation} from 'react-router-dom'
+import {Link, useLocation, useParams} from 'react-router-dom'
 import {RiArrowDownSLine} from 'react-icons/ri'
 import {CardProduct} from '../components'
 import {useDataSlice} from '../Features/hooks'
@@ -36,6 +36,8 @@ const sortValue = [
 const Shop = () => {
 
   const location = useLocation()
+  
+  const {id} = useParams()
 
   const [selected, setSelected] = useState({
     categories: [],
@@ -65,7 +67,7 @@ const Shop = () => {
   const products = data.products 
   const attributes = data.attributes
 
-  
+
   const updateProducts = () => {
     let temp = products
     if(selected.categories.length > 0) {
@@ -104,11 +106,13 @@ const Shop = () => {
     setShowProducts(temp)
   }
 // item.options.some(option => selected.categories.includes(option) ) 
-
-  console.log(showProducts)
   useEffect(() => { 
     updateProducts()
   }, [selected, products])
+
+  useEffect(() => {
+    if(id) setSelected({...selected, categories: [...selected.categories.filter(cate => cate === id), id]})
+  }, [id])
 
 
   return (
@@ -119,7 +123,7 @@ const Shop = () => {
             <Row>
               <Col lg={3} className="hidden lg:block">
                 <div className="pr-[10%]">
-                  <Sidebar categories={categories} setSelected={setSelected}  attributes={attributes} />
+                  <Sidebar categories={categories} setSelected={setSelected} selected={selected}  attributes={attributes} />
                 </div>
               </Col>
               <Col lg={9}>

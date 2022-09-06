@@ -22,7 +22,7 @@ const CardProduct = ({data, tunOffAction}) => {
   return (
     <div className='group'> 
       <div className='relative'>
-        <Link className='block'  to={`/shop/${data.id}`}>
+        <Link className='block'  to={`/shop/product/${data.name}`}>
           <img  className='max-w-full h-auto transition-all duration-300 ease' src={image.mediaItemUrl} alt="" />
           {galleryImages.nodes.length > 0 && (
             <img className=' opacity-0 group-hover:!opacity-100 absolute w-full top-0  left-0  right-0 h-auto transition-all duration-300 ease' src={galleryImages.nodes[1].mediaItemUrl} alt="" />
