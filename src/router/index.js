@@ -1,7 +1,7 @@
-import { Home, Shop } from "../pages";
-import { useDataSlice } from "../Features/hooks";
-import { useEffect } from "react";
+import React from "react";
 
+const Home = React.lazy(() => import('../pages/Home'))
+const Shop = React.lazy(() => import('../pages/Shop'))
 
 export const PublicRoutes = () =>{
 

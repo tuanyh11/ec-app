@@ -49,8 +49,6 @@ const Shop = () => {
   const [cateData, cateActs] = useCategoriesSlice();
   const [attData, attActs] = useAttributesSlice();
 
-  const isPending =
-  productData.isPending || cateData.isPending || attData.isPending;
   const error = productData.error || cateData.error;
 
 
@@ -130,26 +128,16 @@ const Shop = () => {
     }
     setShowProducts(temp);
   };
-  // item.options.some(option => selected.categories.includes(option) )
+
   useEffect(() => {
     updateProducts();
   }, [selected, products]);
 
-  // useEffect(() => {
-  //   if (id)
-  //     setSelected({
-  //       ...selected,
-  //       categories: [...selected.categories.filter((cate) => cate === id), id],
-  //     });
-  // }, [id]);
 
 
   if (error) return <div>{error}</div>;
   return (
     <div className="lg:p-[60px_80px] p-[60px_0_80px]">
-      {isPending ? (
-        <div className="flex justify-center"><Loading/></div>
-      ) : (
         <Container fluid="xl">
           <Row>
             <Col lg={3} className="hidden lg:block">
@@ -217,7 +205,6 @@ const Shop = () => {
             </Col>
           </Row>
         </Container>
-      )}
     </div>
   );
 };

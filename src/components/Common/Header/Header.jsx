@@ -603,6 +603,10 @@ function Header() {
     setSelectPanel(title);
   };
 
+  useEffect(() => {
+    dispatch(headerActs.fetchAsyncAllPages())
+  }, [])
+
   return (
     <div className="h-[90px] flex items-center">
       {isTurnOn && (

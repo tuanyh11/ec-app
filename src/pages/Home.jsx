@@ -135,12 +135,6 @@ const Home = () => {
   const policies = policyData.policyItems;
   const rootCategories = cateData.rootCategories;
   const discountBanner = bannerData.discountBanner;
-  const isPending =
-    cateData.isPending ||
-    policyData.isPending ||
-    productData.isPending ||
-    bannerData.isPending ||
-    reviewData.isPending;
 
   const [category, setCategory] = useState('');
   const productFilter = productData.productsFilter;
@@ -166,12 +160,8 @@ const Home = () => {
     setCategory(cate.name);
   };
 
-  // if(isRejected) return  <div>Something went wrong</div>
   return (
     <>
-      {isPending ? (
-        <div className="flex justify-center"><Loading/></div>
-      ) : (
         <div>
           <CampaignBar
             title="GET 20% SALE WITH COUPONE CODE CGBNJKI25"
@@ -430,7 +420,6 @@ const Home = () => {
             </Container>
           </section>
         </div>
-      )}
     </>
   );
 };

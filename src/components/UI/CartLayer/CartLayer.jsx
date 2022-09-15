@@ -45,8 +45,8 @@ const CartLayer = ({data, toggleLayer, onDispatch, products}) => {
       }
 
   return (
-    <div className="max-w-[770px] absolute bg-white top-[50%] left-[50%] p-[30px] translate-y-[-50%]  translate-x-[-50%] z-[999999999999999]">
-        <div onClick={() => onDispatch(toggleLayer(false))} className="absolute  top-[-12px] bg-white flex items-center p-[10px] rounded-[50%] justify-center right-[-12px] cursor-pointer group">
+    <div className="max-w-[770px] absolute bg-white top-[50%] left-[50%] p-[30px] translate-y-[-50%]  translate-x-[-50%] z-[999999999999999] h-full">
+        <div onClick={() => onDispatch(toggleLayer(false))} className="absolute  top-[20px] bg-white flex items-center p-[10px] rounded-[50%] justify-center right-[20px] cursor-pointer group">
             <RiCloseLine  className="w-6 h-6  text-[#a6a6a6] group-hover:text-[#767676]"/>
         </div>
         <div>
